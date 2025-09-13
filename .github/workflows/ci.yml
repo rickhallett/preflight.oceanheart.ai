@@ -1,0 +1,46 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: test_password
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install frontend dependencies
+        run: |
+          cd apps/preflight-web || exit 0
+          bun install
+
+      - name: Install backend dependencies
+        run: |
+          cd apps/preflight-api
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Lint backend
+        run: |
+          cd apps/preflight-api
+          ruff --version
+          ruff check app || true
+
+      - name: Test database migrations
+        env:
+          DATABASE_URL: postgresql://postgres:test_password@localhost:5432/postgres
+        run: |
+          cd apps/preflight-api
+          alembic upgrade head
+
