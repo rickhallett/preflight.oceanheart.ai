@@ -5,7 +5,7 @@
   import LandingPage from '$lib/components/LandingPage.svelte';
   import '../app.css';
   
-  let { children } = $props();
+  let { children, data } = $props();
   let showLanding = $state(true);
 
   onMount(() => {
@@ -31,9 +31,9 @@
 </svelte:head>
 
 {#if showLanding}
-  <LandingPage on:proceed={handleProceed} />
+  <LandingPage onproceed={handleProceed} />
 {:else}
-  <MainLayout>
+  <MainLayout user={data.user}>
     {@render children?.()}
   </MainLayout>
 {/if}
