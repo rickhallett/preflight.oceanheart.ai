@@ -1,18 +1,18 @@
 <script>
   import AnimatedCard from '$lib/components/AnimatedCard.svelte';
   import AnimatedButton from '$lib/components/AnimatedButton.svelte';
+  import SparklesHero from '$lib/components/SparklesHero.svelte';
 </script>
 
-<div class="max-w-4xl mx-auto space-y-8">
-  <!-- Hero Section -->
-  <div class="text-center space-y-4">
-    <h1 class="text-4xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
-      Welcome to OceanHeart Preflight
-    </h1>
-    <p class="text-lg text-gray-600 dark:text-gray-300">
-      Your journey to wellness starts here
-    </p>
-  </div>
+<div class="space-y-12">
+  <!-- Hero Section with Sparkles -->
+  <SparklesHero 
+    title="Preflight" 
+    subtitle="Your journey to wellness starts here"
+    className="mb-16"
+  />
+  
+  <div class="max-w-4xl mx-auto space-y-8">
 
   <!-- Feature Cards Grid -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -63,5 +63,6 @@
       <div class="text-3xl font-bold text-indigo-600 dark:text-indigo-400">24/7</div>
       <div class="text-gray-600 dark:text-gray-300">Support Available</div>
     </AnimatedCard>
+  </div>
   </div>
 </div>
