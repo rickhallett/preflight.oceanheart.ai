@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import type React from "react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 type Card = {
   id: number;
@@ -61,16 +62,21 @@ export const LayoutGrid = ({ cards }: { cards: Card[] }) => {
 
 const ImageComponent = ({ card }: { card: Card }) => {
   return (
-    <motion.img
+    <motion.div
       layoutId={`image-${card.id}-image`}
-      src={card.thumbnail}
-      height="500"
-      width="500"
       className={cn(
         "object-cover object-top absolute inset-0 h-full w-full transition duration-200",
       )}
-      alt="thumbnail"
-    />
+    >
+      <Image
+        src={card.thumbnail}
+        height={500}
+        width={500}
+        className="object-cover object-top h-full w-full"
+        alt="thumbnail"
+        fill
+      />
+    </motion.div>
   );
 };
 

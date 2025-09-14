@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface CompareProps {
   firstImage?: string;
@@ -220,13 +221,14 @@ export const Compare = ({
               }}
               transition={{ duration: 0 }}
             >
-              <img
-                alt="first image"
+              <Image
+                alt="First comparison view"
                 src={firstImage}
                 className={cn(
                   "absolute inset-0  z-20 rounded-2xl shrink-0 w-full h-full select-none",
                   firstImageClassName,
                 )}
+                fill
                 draggable={false}
               />
             </motion.div>
@@ -236,15 +238,19 @@ export const Compare = ({
 
       <AnimatePresence initial={false}>
         {secondImage ? (
-          <motion.img
+          <motion.div
             className={cn(
-              "absolute top-0 left-0 z-[19]  rounded-2xl w-full h-full select-none",
+              "absolute top-0 left-0 z-[19] rounded-2xl w-full h-full select-none",
               secondImageClassname,
             )}
-            alt="second image"
-            src={secondImage}
-            draggable={false}
-          />
+          >
+            <Image
+              alt="Second comparison view"
+              src={secondImage}
+              fill
+              draggable={false}
+            />
+          </motion.div>
         ) : null}
       </AnimatePresence>
     </div>

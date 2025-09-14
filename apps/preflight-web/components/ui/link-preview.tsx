@@ -8,6 +8,7 @@ import {
 } from "motion/react";
 import { encode } from "qss";
 import React from "react";
+import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 
@@ -29,13 +30,10 @@ export const LinkPreview = ({
   url,
   className,
   width = 200,
-  height = 125,
-  quality = 50,
-  layout = "fixed",
   isStatic = false,
   imageSrc = "",
 }: LinkPreviewProps) => {
-  let src;
+  let src: string;
   if (!isStatic) {
     const params = encode({
       url,
@@ -66,7 +64,7 @@ export const LinkPreview = ({
 
   const translateX = useSpring(x, springConfig);
 
-  const handleMouseMove = (event: any) => {
+  const handleMouseMove = (event: React.MouseEvent<HTMLAnchorElement>) => {
     const targetRect = event.target.getBoundingClientRect();
     const eventOffsetX = event.clientX - targetRect.left;
     const offsetFromCenter = (eventOffsetX - targetRect.width / 2) / 2; // Reduce the effect to make it subtle
@@ -77,7 +75,7 @@ export const LinkPreview = ({
     <>
       {isMounted ? (
         <div className="hidden">
-          <img src={src} width={width} height={height} alt="hidden image" />
+          <Image src={src} width={width} height={height} alt="Link preview preload" />
         </div>
       ) : null}
 
@@ -127,12 +125,12 @@ export const LinkPreview = ({
                   className="block p-1 bg-white border-2 border-transparent shadow rounded-xl hover:border-neutral-200 dark:hover:border-neutral-800"
                   style={{ fontSize: 0 }}
                 >
-                  <img
+                  <Image
                     src={isStatic ? imageSrc : src}
                     width={width}
                     height={height}
                     className="rounded-lg"
-                    alt="preview image"
+                    alt="Link preview"
                   />
                 </a>
               </motion.div>

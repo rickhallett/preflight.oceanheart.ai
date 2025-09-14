@@ -1,8 +1,9 @@
 "use client";
 import { AnimatePresence, motion } from "motion/react";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export const ImagesSlider = ({
   images,
@@ -25,23 +26,19 @@ export const ImagesSlider = ({
   const [_loading, setLoading] = useState(false);
   const [loadedImages, setLoadedImages] = useState<string[]>([]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setCurrentIndex((prevIndex) =>
       prevIndex + 1 === images.length ? 0 : prevIndex + 1,
     );
-  };
+  }, [images.length]);
 
-  const handlePrevious = () => {
+  const handlePrevious = useCallback(() => {
     setCurrentIndex((prevIndex) =>
       prevIndex - 1 < 0 ? images.length - 1 : prevIndex - 1,
     );
-  };
+  }, [images.length]);
 
-  useEffect(() => {
-    loadImages();
-  }, [loadImages]);
-
-  const loadImages = () => {
+  const loadImages = useCallback(() => {
     setLoading(true);
     const loadPromises = images.map((image) => {
       return new Promise((resolve, reject) => {
@@ -58,7 +55,11 @@ export const ImagesSlider = ({
         setLoading(false);
       })
       .catch((error) => console.error("Failed to load images", error));
-  };
+  }, [images]);
+
+  useEffect(() => {
+    loadImages();
+  }, [loadImages]);
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "ArrowRight") {
@@ -71,7 +72,7 @@ export const ImagesSlider = ({
     window.addEventListener("keydown", handleKeyDown);
 
     // autoplay
-    let interval: any;
+    let interval: NodeJS.Timeout;
     if (autoplay) {
       interval = setInterval(() => {
         handleNext();
@@ -136,15 +137,21 @@ export const ImagesSlider = ({
 
       {areImagesLoaded && (
         <AnimatePresence>
-          <motion.img
+          <motion.div
             key={currentIndex}
-            src={loadedImages[currentIndex]}
             initial="initial"
             animate="visible"
             exit={direction === "up" ? "upExit" : "downExit"}
             variants={slideVariants}
-            className="image h-full w-full absolute inset-0 object-cover object-center"
-          />
+            className="image h-full w-full absolute inset-0"
+          >
+            <Image
+              src={loadedImages[currentIndex]}
+              alt={`Slide ${currentIndex + 1}`}
+              fill
+              className="object-cover object-center"
+            />
+          </motion.div>
         </AnimatePresence>
       )}
     </div>

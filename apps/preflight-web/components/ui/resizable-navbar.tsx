@@ -7,6 +7,7 @@ import {
   useScroll,
 } from "motion/react";
 import React, { useRef, useState } from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 interface NavbarProps {
@@ -193,7 +194,6 @@ export const MobileNavMenu = ({
   children,
   className,
   isOpen,
-  onClose,
 }: MobileNavMenuProps) => {
   return (
     <AnimatePresence>
@@ -231,10 +231,10 @@ export const MobileNavToggle = ({
 export const NavbarLogo = () => {
   return (
     <a
-      href="#"
+      href="/"
       className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
     >
-      <img
+      <Image
         src="https://assets.aceternity.com/logo-dark.png"
         alt="logo"
         width={30}
@@ -247,19 +247,10 @@ export const NavbarLogo = () => {
 
 export const NavbarButton = React.forwardRef<
   any,
-  {
-    href?: string;
-    as?: React.ElementType;
-    children: React.ReactNode;
-    className?: string;
-    variant?: "primary" | "secondary" | "dark" | "gradient";
-  } & (
-    | React.ComponentPropsWithoutRef<"a">
-    | React.ComponentPropsWithoutRef<"button">
-  )
+  any
 >(
   (
-    { href, as: Tag = "a", children, className, variant = "primary", ...props },
+    { href, as: Tag = "a", children, className, variant = "primary" as "primary" | "secondary" | "dark" | "gradient", ...props },
     ref,
   ) => {
     const baseStyles =
@@ -274,12 +265,12 @@ export const NavbarButton = React.forwardRef<
         "bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset]",
     };
 
-    const Component = Tag as any;
+    const Component = Tag;
     return (
       <Component
         ref={ref}
         href={href || undefined}
-        className={cn(baseStyles, variantStyles[variant], className)}
+        className={cn(baseStyles, variantStyles[variant as keyof typeof variantStyles], className)}
         {...props}
       >
         {children}

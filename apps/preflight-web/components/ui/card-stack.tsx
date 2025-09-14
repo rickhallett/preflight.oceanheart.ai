@@ -31,7 +31,10 @@ export const CardStack = ({
     interval = setInterval(() => {
       setCards((prevCards: Card[]) => {
         const newArray = [...prevCards]; // create a copy of the array
-        newArray.unshift(newArray.pop()!); // move the last element to the front
+        const lastCard = newArray.pop();
+        if (lastCard) {
+          newArray.unshift(lastCard); // move the last element to the front
+        }
         return newArray;
       });
     }, 5000);

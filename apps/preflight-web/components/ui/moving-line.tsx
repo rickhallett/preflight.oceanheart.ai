@@ -7,7 +7,7 @@ const MovingLine = () => {
     ease: "easeInOut",
   };
 
-  const ref = useRef<any>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   // Track scroll progress, lies between 0 and 1.
   const { scrollYProgress } = useScroll({
@@ -72,10 +72,7 @@ const MovingLine = () => {
   );
 };
 
-{
-  /* dummy content to fill up the screen */
-}
-
+/* dummy content to fill up the screen */
 export const Content = () => {
   return (
     <div className="content w-full mb-10 ">

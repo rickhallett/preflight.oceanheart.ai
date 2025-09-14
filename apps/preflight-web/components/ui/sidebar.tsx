@@ -120,6 +120,14 @@ export const MobileSidebar = ({
         <IconMenu2
           className="text-neutral-800 dark:text-neutral-200"
           onClick={() => setOpen(!open)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setOpen(!open);
+            }
+          }}
+          role="button"
+          tabIndex={0}
         />
       </div>
       <AnimatePresence>
