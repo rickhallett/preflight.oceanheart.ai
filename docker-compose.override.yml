@@ -1,0 +1,13 @@
+services:
+  web:
+    build:
+      context: ./apps/preflight-web
+      target: development
+    volumes:
+      - ./apps/preflight-web:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
