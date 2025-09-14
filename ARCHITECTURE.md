@@ -1,7 +1,7 @@
 # Project Architecture
 
-## Last Updated: 2025-09-13
-## Version: 0.1.0
+## Last Updated: 2025-09-14
+## Version: 0.2.0
 
 ## 1. High-Level Overview
 
@@ -9,20 +9,21 @@
 OceanHeart Preflight is an AI-powered web application for personal growth and performance optimization. It provides personalized coaching, interactive surveys, feedback collection, and progress tracking through a modern web interface.
 
 ### 1.2 Core Technologies
-- **Framework**: SvelteKit 2.22.0 with Svelte 5.0.0 (runes mode)
-- **Styling**: Tailwind CSS 4.1.13 + Skeleton Labs UI 3.2.0
+- **Framework**: Next.js 15.5.3 with React 19.1.0
+- **Styling**: Tailwind CSS 4.1.13 + Aceternity UI components
 - **Authentication**: External OAuth with passport.oceanheart.ai + JWT with HttpOnly cookies
 - **Runtime**: Bun (preferred over Node.js per project guidelines)
-- **Build**: Vite 7.0.4
+- **Build**: Next.js with Turbopack
 - **Language**: TypeScript 5.0.0
 
 ### 1.3 Architecture Pattern
-- **Pattern**: Component-based architecture with server-side rendering
+- **Pattern**: Component-based architecture with server-side rendering and client-side hydration
 - **Key Decisions**: 
   - Server-side JWT validation for security
   - External OAuth provider for authentication
-  - Layout component system for consistent UI
-  - Svelte 5 runes for modern reactive programming
+  - App Router architecture for modern routing
+  - React Server Components for performance
+  - Turbopack for fast development builds
 - **Design Principles**: 
   - Security-first authentication
   - Component reusability
@@ -34,124 +35,152 @@ OceanHeart Preflight is an AI-powered web application for personal growth and pe
 ### 2.1 Directory Structure
 ```
 apps/preflight-web/
-├── src/
-│   ├── lib/
-│   │   ├── components/     # Reusable UI components
-│   │   │   ├── MainLayout.svelte
-│   │   │   ├── Header.svelte
-│   │   │   ├── Footer.svelte
-│   │   │   ├── Navbar.svelte
-│   │   │   └── LandingPage.svelte
-│   │   ├── api/           # API client utilities
-│   │   ├── auth.ts        # Authentication utilities (legacy)
-│   │   └── index.ts       # Library exports
-│   ├── routes/            # SvelteKit file-based routing
-│   │   ├── auth/
-│   │   │   └── callback/  # OAuth callback handler
-│   │   ├── coach/         # Coaching pages
-│   │   ├── feedback/      # Feedback collection
-│   │   ├── survey/        # Survey pages
-│   │   ├── login/         # Login page
-│   │   ├── logout/        # Logout handler
-│   │   ├── +layout.svelte # Root layout
-│   │   ├── +layout.server.ts # Server-side layout data
-│   │   └── +page.svelte   # Home page
-│   ├── hooks.server.ts    # Server-side request hooks
-│   └── app.d.ts          # TypeScript declarations
-├── static/               # Static assets
-├── package.json         # Dependencies and scripts
-├── svelte.config.js     # Svelte configuration
-├── tailwind.config.js   # Tailwind configuration
-├── tsconfig.json        # TypeScript configuration
-└── vite.config.ts       # Vite build configuration
+├── app/                  # Next.js App Router
+│   ├── globals.css      # Global styles
+│   ├── layout.tsx       # Root layout component
+│   ├── page.tsx         # Home page
+│   ├── auth/
+│   │   └── callback/    # OAuth callback handler
+│   ├── coach/           # Coaching pages
+│   ├── feedback/        # Feedback collection
+│   ├── survey/          # Survey pages
+│   └── login/           # Login page
+├── components/          # Reusable UI components
+│   ├── ui/             # Base UI components (shadcn/ui style)
+│   └── aceternity/     # Aceternity UI components
+├── lib/                # Utility functions and configurations
+│   ├── utils.ts        # General utilities
+│   └── auth.ts         # Authentication utilities
+├── hooks/              # Custom React hooks
+├── public/             # Static assets
+├── package.json        # Dependencies and scripts
+├── next.config.ts      # Next.js configuration
+├── tailwind.config.js  # Tailwind configuration
+├── tsconfig.json       # TypeScript configuration
+├── biome.json          # Biome linting/formatting config
+└── components.json     # UI components configuration
 ```
 
 ### 2.2 Component Hierarchy
 - **Layout Components**:
-  - `MainLayout.svelte`: Root layout orchestrator
-  - `Header.svelte`: Application branding and user menu
-  - `Navbar.svelte`: Primary navigation (user-aware)
-  - `Footer.svelte`: Site footer
+  - `app/layout.tsx`: Root layout orchestrator
+  - Custom layout components in `components/` directory
+  - Header, Footer, Navigation components as React components
 - **Page Components**:
-  - `LandingPage.svelte`: Welcome screen for new/returning users
-  - Route-based page components in `src/routes/`
-- **Utility Components**: Skeleton UI components for consistent theming
+  - `app/page.tsx`: Home page component
+  - Route-based page components in `app/` directory
+  - Landing page and feature components in `components/`
+- **UI Components**: 
+  - Aceternity UI components for advanced animations
+  - Base UI components following shadcn/ui patterns
+  - Custom hooks in `hooks/` directory
 
 ### 2.3 Data Flow
 - **Authentication Flow**:
   1. User redirects to passport.oceanheart.ai for OAuth
   2. Callback handler (`/auth/callback`) receives JWT token
   3. Token stored as HttpOnly cookie for security
-  4. `hooks.server.ts` validates JWT on each request
-  5. User data passed to layouts via `+layout.server.ts`
-- **State Management**: Server-side state through SvelteKit's load functions
-- **Client State**: Svelte 5 runes (`$state`, `$props`) for reactive components
+  4. Middleware validates JWT on each request
+  5. User data passed through React context or server components
+- **State Management**: 
+  - Server state through React Server Components
+  - Client state through React hooks and context
+  - Data fetching via Next.js data fetching patterns
 
 ### 2.4 Routing Strategy
-- **File-based Routing**: SvelteKit's automatic route generation
-- **Server Routes**: API endpoints using `+server.ts` files
-- **Layout Inheritance**: Nested layouts with shared user context
-- **Protected Routes**: Server-side authentication checks in load functions
+- **App Router**: Next.js 13+ App Router with file-based routing
+- **API Routes**: Server endpoints using `route.ts` files
+- **Layout Inheritance**: Nested layouts with React component composition
+- **Protected Routes**: Middleware-based authentication checks
 
 ## 3. Low-Level Implementation Details
 
 ### 3.1 Component Patterns
 
-#### Svelte 5 Runes Mode
-```svelte
-<script lang="ts">
-  // Props using runes syntax
-  let { children, user } = $props();
-  
-  // Reactive state
-  let count = $state(0);
-</script>
+#### React Server Components
+```tsx
+// Server Component (default in app directory)
+import { getUserFromToken } from '@/lib/auth';
 
-<div>
-  <!-- Render props pattern for layout -->
-  {@render children?.()}
-</div>
+export default async function Layout({
+  children
+}: {
+  children: React.ReactNode;
+}) {
+  const user = await getUserFromToken();
+  
+  return (
+    <div className="app min-h-screen flex flex-col">
+      <Header />
+      <Navbar user={user} />
+      <main className="flex-1 container mx-auto px-4 py-8">
+        {children}
+      </main>
+      <Footer />
+    </div>
+  );
+}
 ```
 
-#### Layout Component Structure
-```svelte
-<!-- MainLayout.svelte -->
-<div class="app min-h-screen flex flex-col">
-  <Header />
-  <Navbar {user} />
-  <main class="flex-1 container mx-auto px-4 py-8">
-    {@render children?.()}
-  </main>
-  <Footer />
-</div>
+#### Client Components
+```tsx
+'use client';
+
+import { useState } from 'react';
+
+export default function InteractiveComponent() {
+  const [count, setCount] = useState(0);
+  
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      Count: {count}
+    </button>
+  );
+}
 ```
 
 ### 3.2 Authentication Implementation
 
 #### Server-side JWT Handling
 ```typescript
-// hooks.server.ts
-export const handle: Handle = async ({ event, resolve }) => {
-  const token = event.cookies.get('jwt');
+// middleware.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { jwtDecode } from 'jwt-decode';
+
+export function middleware(request: NextRequest) {
+  const token = request.cookies.get('jwt');
+  
   if (token) {
     try {
-      const user = jwtDecode(token);
-      event.locals.user = user;
+      const user = jwtDecode(token.value);
+      // Add user info to headers for server components
+      const response = NextResponse.next();
+      response.headers.set('x-user-data', JSON.stringify(user));
+      return response;
     } catch (error) {
-      event.locals.user = null;
+      // Invalid token, clear it
+      const response = NextResponse.next();
+      response.cookies.delete('jwt');
+      return response;
     }
   }
-  return resolve(event);
-};
+  
+  return NextResponse.next();
+}
 ```
 
 #### OAuth Callback Handler
 ```typescript
-// routes/auth/callback/+server.ts
-export const GET: RequestHandler = async ({ url, cookies }) => {
-  const token = url.searchParams.get('token');
+// app/auth/callback/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const token = searchParams.get('token');
+  
   if (token) {
-    cookies.set('jwt', token, {
+    cookies().set('jwt', token, {
       path: '/',
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -159,70 +188,76 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
       maxAge: 60 * 60 * 24 * 7 // 1 week
     });
   }
-  throw redirect(303, '/');
-};
+  
+  return NextResponse.redirect(new URL('/', request.url));
+}
 ```
 
 ### 3.3 Naming Conventions
 - **Files**: PascalCase for components, kebab-case for pages
-- **CSS**: Skeleton UI token system with Tailwind utilities
+- **CSS**: Tailwind utilities with CSS-in-JS patterns
 - **TypeScript**: camelCase for variables, PascalCase for types/interfaces
 
 ### 3.4 Key Components
 
-#### MainLayout.svelte
-- **Purpose**: Root layout orchestrator with header, nav, main, footer
-- **Props**: `children` (render prop), `user` (authentication state)
-- **Features**: Responsive flex layout, consistent spacing
+#### app/layout.tsx
+- **Purpose**: Root layout orchestrator with global providers
+- **Props**: `children` (React.ReactNode), metadata configuration
+- **Features**: Global styles, font loading, metadata management
 
-#### LandingPage.svelte
-- **Purpose**: Welcome screen for new users or returning users (7+ days)
-- **Props**: `onproceed` callback function
-- **Features**: Hero section, feature highlights, release notes, CTA
+#### Landing Page Components
+- **Purpose**: Welcome screen with animated hero sections
+- **Location**: `components/` directory with modular structure
+- **Features**: Aceternity animations, interactive elements, responsive design
 
 #### Authentication System
 - **External OAuth**: passport.oceanheart.ai integration
 - **Token Storage**: HttpOnly cookies for security
-- **Validation**: Server-side JWT decoding and verification
-- **State Management**: User context passed through layout hierarchy
+- **Validation**: Middleware-based JWT validation
+- **State Management**: Server components and React context
 
 ### 3.5 Styling Architecture
-- **Design System**: Skeleton Labs UI 3.2.0
+- **Design System**: Aceternity UI components + custom components
 - **Utility Framework**: Tailwind CSS 4.1.13
-- **Token System**: Skeleton's semantic color tokens (primary-700-200-token)
-- **Theme Support**: Built-in dark/light mode with theme picker
+- **Component Library**: shadcn/ui patterns for base components
+- **Animation Library**: Motion (Framer Motion) for advanced animations
+- **Theme Support**: CSS variables with dark/light mode
 - **Responsive Design**: Container-based layouts with responsive breakpoints
 
 ### 3.6 Build Pipeline
-- **Development**: `bun run dev` (Vite dev server with HMR)
-- **Production**: `bun run build` (SvelteKit static generation)
-- **Preview**: `bun run preview` (Preview production build)
-- **Type Checking**: `bun run check` (Svelte + TypeScript validation)
+- **Development**: `bun run dev` (Next.js dev server with Turbopack)
+- **Production**: `bun run build` (Next.js optimized build)
+- **Start**: `bun run start` (Production server)
+- **Linting**: `bun run lint` (Biome linting)
+- **Formatting**: `bun run format` (Biome formatting)
 
 ## 4. External Integrations
 
 ### 4.1 Third-party Services
 - **Authentication**: passport.oceanheart.ai (OAuth provider)
-- **UI Framework**: Skeleton Labs (component library)
+- **UI Framework**: Aceternity UI (advanced component library)
+- **Animation**: Motion (Framer Motion) for complex animations
 
 ### 4.2 Dependencies
-- **Core Framework**: `@sveltejs/kit@^2.22.0`, `svelte@^5.0.0`
-- **UI/Styling**: `@skeletonlabs/skeleton@^3.2.0`, `tailwindcss@^4.1.13`
-- **Authentication**: `jwt-decode@^4.0.0`
-- **Build Tools**: `vite@^7.0.4`, `typescript@^5.0.0`
+- **Core Framework**: `next@15.5.3`, `react@19.1.0`, `react-dom@19.1.0`
+- **UI/Styling**: `tailwindcss@^4.1.13`, Aceternity UI components
+- **Animation**: `motion@^12.23.12`, `@react-three/fiber@^9.0.0-alpha.8`
+- **Icons**: `@tabler/icons-react@^3.34.1`, `lucide-react@^0.544.0`
+- **Development**: `@biomejs/biome@2.2.0`, `typescript@^5`
 
 ## 5. Performance Considerations
 
 ### 5.1 Optimization Strategies
-- **Server-Side Rendering**: SvelteKit's SSR for faster initial page loads
-- **Component Splitting**: Automatic code splitting via SvelteKit
-- **Progressive Enhancement**: JavaScript-optional functionality
-- **Efficient Bundling**: Vite's optimized build process
+- **Server-Side Rendering**: React Server Components for faster initial loads
+- **Static Generation**: Next.js static optimization where possible
+- **Code Splitting**: Automatic route-based and dynamic imports
+- **Turbopack**: Fast development builds and HMR
+- **Image Optimization**: Next.js built-in image optimization
 
 ### 5.2 Bundle Size
-- **Minimal Runtime**: Svelte's compile-time optimizations
-- **Tree Shaking**: Unused code elimination
-- **Lazy Loading**: Route-based code splitting
+- **Tree Shaking**: Unused code elimination via Next.js bundler
+- **Dynamic Imports**: Lazy loading of components and libraries
+- **Server Components**: Reduced client-side JavaScript bundle
 
 ## 6. Security Considerations
 
@@ -247,44 +282,56 @@ bun install
 # Start development server
 bun run dev
 
-# Type checking
-bun run check
+# Build for production
+bun run build
+
+# Start production server
+bun run start
+
+# Linting and formatting
+bun run lint
+bun run format
 ```
 
 ### 7.2 Technology Choices
 - **Runtime**: Bun preferred over Node.js (per project guidelines)
 - **Testing**: `bun test` for unit testing
 - **Package Management**: `bun install` instead of npm/yarn
+- **Linting**: Biome instead of ESLint/Prettier
 
 ### 7.3 Code Organization
 - **Feature-based Structure**: Components organized by functionality
-- **Server/Client Separation**: Clear distinction between server and client code
+- **Server/Client Separation**: Server Components vs Client Components
+- **Hook Organization**: Custom hooks in dedicated `hooks/` directory
 - **Type Definitions**: Comprehensive TypeScript coverage
 
 ## 8. Recent Architectural Changes
 
-### 8.1 Layout System Implementation
-- **New Components**: MainLayout, Header, Footer, Navbar components
-- **Layout Orchestration**: Centralized layout management with user context
-- **Responsive Design**: Mobile-first approach with flexible layouts
+### 8.1 Framework Migration (SvelteKit → Next.js)
+- **Complete Framework Migration**: Migrated from SvelteKit to Next.js 15.5.3
+- **App Router**: Adopted Next.js App Router for modern routing patterns
+- **React Server Components**: Leveraging RSCs for improved performance
+- **Turbopack Integration**: Fast development builds and HMR
 
-### 8.2 Authentication System Overhaul
-- **External OAuth**: Integration with passport.oceanheart.ai
-- **Security Enhancement**: HttpOnly cookie-based JWT storage
-- **Server-side Validation**: Request-level authentication checks
+### 8.2 UI Framework Migration
+- **Aceternity UI Integration**: Advanced animation components and modern design
+- **Component Architecture**: shadcn/ui patterns for base components
+- **Animation System**: Motion (Framer Motion) for complex animations
+- **3D Graphics**: Three.js integration for advanced visualizations
 
-### 8.3 UI Framework Migration
-- **Skeleton Labs Integration**: Modern component library adoption
-- **Theme System**: Built-in dark/light mode support
-- **Design Token System**: Semantic color and spacing tokens
+### 8.3 Development Tooling
+- **Biome Integration**: Modern linting and formatting replacing ESLint/Prettier
+- **TypeScript 5**: Latest TypeScript features and improved DX
+- **Build System**: Next.js + Turbopack for optimized builds
 
-### 8.4 Svelte 5 Migration
-- **Runes Mode**: Modern reactive programming with `$props()`, `$state()`
-- **Performance**: Improved reactivity and smaller bundle sizes
-- **Developer Experience**: Better TypeScript integration
+### 8.4 Authentication System Continuity
+- **External OAuth**: Maintained integration with passport.oceanheart.ai
+- **Security Enhancement**: HttpOnly cookie-based JWT storage (unchanged)
+- **Middleware-based Validation**: Next.js middleware for authentication
 
 ## 9. Revision History
 
 | Date | Version | Changes | Author |
 |------|---------|---------|--------|
+| 2025-09-14 | 0.2.0 | Major framework migration from SvelteKit to Next.js: App Router, React Server Components, Aceternity UI, Turbopack, Biome tooling | Claude |
 | 2025-09-13 | 0.1.0 | Initial architecture documentation: layout system, OAuth authentication, Skeleton UI integration, Svelte 5 runes mode, landing page implementation | Claude |

@@ -10,7 +10,7 @@ jobs:
         env:
           POSTGRES_PASSWORD: test_password
         ports:
-          - 5432:5432
+          - 5433:5432
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
@@ -39,7 +39,7 @@ jobs:
 
       - name: Test database migrations
         env:
-          DATABASE_URL: postgresql://postgres:test_password@localhost:5432/postgres
+          DATABASE_URL: postgresql://postgres:test_password@localhost:5433/postgres
         run: |
           cd apps/preflight-api
           alembic upgrade head
