@@ -1,5 +1,6 @@
 <script>
   import AnimatedCard from '$lib/components/AnimatedCard.svelte';
+  import AnimatedButton from '$lib/components/AnimatedButton.svelte';
 </script>
 
 <div class="max-w-4xl mx-auto space-y-8">
@@ -18,25 +19,31 @@
     <AnimatedCard delay={100}>
       <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">Survey</h2>
       <p class="text-gray-600 dark:text-gray-300">Complete your wellness assessment to get personalized recommendations.</p>
-      <a href="/survey" class="inline-block mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-        Start Survey
-      </a>
+      <div class="mt-4">
+        <AnimatedButton href="/survey" variant="primary">
+          Start Survey
+        </AnimatedButton>
+      </div>
     </AnimatedCard>
     
     <AnimatedCard delay={200}>
       <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">Coach</h2>
       <p class="text-gray-600 dark:text-gray-300">Get AI-powered coaching tailored to your wellness goals.</p>
-      <a href="/coach" class="inline-block mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
-        Meet Coach
-      </a>
+      <div class="mt-4">
+        <AnimatedButton href="/coach" variant="primary">
+          Meet Coach
+        </AnimatedButton>
+      </div>
     </AnimatedCard>
     
     <AnimatedCard delay={300}>
       <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">Feedback</h2>
       <p class="text-gray-600 dark:text-gray-300">Review your progress and share your experience.</p>
-      <a href="/feedback" class="inline-block mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
-        Give Feedback
-      </a>
+      <div class="mt-4">
+        <AnimatedButton href="/feedback" variant="primary">
+          Give Feedback
+        </AnimatedButton>
+      </div>
     </AnimatedCard>
   </div>
   
