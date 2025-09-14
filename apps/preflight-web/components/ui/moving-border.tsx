@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import {
   motion,
   useAnimationFrame,
@@ -7,6 +6,7 @@ import {
   useMotionValue,
   useTransform,
 } from "motion/react";
+import type React from "react";
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
 
@@ -114,6 +114,7 @@ export const MovingBorder = ({
         height="100%"
         {...otherProps}
       >
+        <title>Moving border animation</title>
         <rect
           fill="none"
           width="100%"

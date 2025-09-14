@@ -1,8 +1,8 @@
 "use client";
+import { IconCheck, IconCopy } from "@tabler/icons-react";
 import React from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import { IconCheck, IconCopy } from "@tabler/icons-react";
 
 type CodeBlockProps = {
   language: string;
@@ -60,7 +60,7 @@ export const CodeBlock = ({
           <div className="flex  overflow-x-auto">
             {tabs.map((tab, index) => (
               <button
-                key={index}
+                key={`tab-${tab.name}-${index}`}
                 onClick={() => setActiveTab(index)}
                 className={`px-3 !py-2 text-xs transition-colors font-sans ${
                   activeTab === index

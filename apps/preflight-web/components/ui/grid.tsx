@@ -1,5 +1,3 @@
-import React from "react";
-
 const GridBackgroundPreview = () => {
   return (
     <div className="h-[50rem] w-full bg-black bg-grid-white/[0.1] relative flex items-center justify-center">

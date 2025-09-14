@@ -1,7 +1,7 @@
 "use client";
+import { motion, useMotionTemplate, useMotionValue } from "motion/react";
+import type React from "react";
 import { cn } from "@/lib/utils";
-import { useMotionValue, motion, useMotionTemplate } from "motion/react";
-import React from "react";
 
 export const HeroHighlight = ({
   children,
@@ -12,8 +12,8 @@ export const HeroHighlight = ({
   className?: string;
   containerClassName?: string;
 }) => {
-  let mouseX = useMotionValue(0);
-  let mouseY = useMotionValue(0);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
   // SVG patterns for different states and themes
   const dotPatterns = {
@@ -33,7 +33,7 @@ export const HeroHighlight = ({
     clientY,
   }: React.MouseEvent<HTMLDivElement>) {
     if (!currentTarget) return;
-    let { left, top } = currentTarget.getBoundingClientRect();
+    const { left, top } = currentTarget.getBoundingClientRect();
 
     mouseX.set(clientX - left);
     mouseY.set(clientY - top);
@@ -45,6 +45,7 @@ export const HeroHighlight = ({
         containerClassName,
       )}
       onMouseMove={handleMouseMove}
+      role="presentation"
     >
       <div
         className="pointer-events-none absolute inset-0 dark:hidden"

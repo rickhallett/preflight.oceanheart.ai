@@ -1,7 +1,6 @@
 "use client";
-import { useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
-import { motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
@@ -49,7 +48,7 @@ export const ParallaxScrollSecond = ({
                 x: translateXFirst,
                 rotateZ: rotateXFirst,
               }} // Apply the translateY motion value here
-              key={"grid-1" + idx}
+              key={`grid-1-${el}-${idx}`}
             >
               <img
                 src={el}
@@ -63,7 +62,7 @@ export const ParallaxScrollSecond = ({
         </div>
         <div className="grid gap-10">
           {secondPart.map((el, idx) => (
-            <motion.div key={"grid-2" + idx}>
+            <motion.div key={`grid-2-${el}-${idx}`}>
               <img
                 src={el}
                 className="h-80 w-full object-cover object-left-top rounded-lg gap-10 !m-0 !p-0"
@@ -82,7 +81,7 @@ export const ParallaxScrollSecond = ({
                 x: translateXThird,
                 rotateZ: rotateXThird,
               }}
-              key={"grid-3" + idx}
+              key={`grid-3-${el}-${idx}`}
             >
               <img
                 src={el}

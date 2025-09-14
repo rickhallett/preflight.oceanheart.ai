@@ -1,11 +1,5 @@
-import React, { useRef } from "react";
-import {
-  motion,
-  useMotionValueEvent,
-  useScroll,
-  useSpring,
-  useTransform,
-} from "motion/react";
+import { motion, useScroll, useSpring, useTransform } from "motion/react";
+import { useRef } from "react";
 
 const MovingLine = () => {
   const transition = {
@@ -38,6 +32,7 @@ const MovingLine = () => {
         xmlns="http://www.w3.org/2000/svg"
         className="shrink-0"
       >
+        <title>Moving line animation</title>
         <path d={PATH} stroke="url(#paint0_linear_207_38)" />
         <defs>
           <linearGradient

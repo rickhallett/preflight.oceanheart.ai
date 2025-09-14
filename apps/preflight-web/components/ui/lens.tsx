@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import type React from "react";
+import { useRef, useState } from "react";
 
 interface LensProps {
   children: React.ReactNode;
@@ -52,6 +53,7 @@ export const Lens: React.FC<LensProps> = ({
       }}
       onMouseLeave={() => setIsHovering(false)}
       onMouseMove={handleMouseMove}
+      role="presentation"
     >
       {children}
 

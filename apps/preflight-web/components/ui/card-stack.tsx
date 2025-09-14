@@ -1,8 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
 import { motion } from "motion/react";
+import { useCallback, useEffect, useState } from "react";
 
-let interval: any;
+let interval: ReturnType<typeof setInterval> | null = null;
 
 type Card = {
   id: number;
@@ -24,12 +24,10 @@ export const CardStack = ({
   const SCALE_FACTOR = scaleFactor || 0.06;
   const [cards, setCards] = useState<Card[]>(items);
 
-  useEffect(() => {
-    startFlipping();
-
-    return () => clearInterval(interval);
-  }, []);
-  const startFlipping = () => {
+  const startFlipping = useCallback(() => {
+    if (interval) {
+      clearInterval(interval);
+    }
     interval = setInterval(() => {
       setCards((prevCards: Card[]) => {
         const newArray = [...prevCards]; // create a copy of the array
@@ -37,7 +35,18 @@ export const CardStack = ({
         return newArray;
       });
     }, 5000);
-  };
+  }, []);
+
+  useEffect(() => {
+    startFlipping();
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+        interval = null;
+      }
+    };
+  }, [startFlipping]);
 
   return (
     <div className="relative  h-60 w-60 md:h-60 md:w-96">

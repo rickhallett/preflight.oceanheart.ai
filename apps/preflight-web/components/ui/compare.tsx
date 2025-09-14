@@ -1,9 +1,9 @@
 "use client";
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { SparklesCore } from "@/components/ui/sparkles";
-import { AnimatePresence, motion } from "motion/react";
-import { cn } from "@/lib/utils";
 import { IconDotsVertical } from "@tabler/icons-react";
+import { AnimatePresence, motion } from "motion/react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { SparklesCore } from "@/components/ui/sparkles";
+import { cn } from "@/lib/utils";
 
 interface CompareProps {
   firstImage?: string;
@@ -34,7 +34,7 @@ export const Compare = ({
 
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  const [isMouseOver, setIsMouseOver] = useState(false);
+  const [_isMouseOver, setIsMouseOver] = useState(false);
 
   const autoplayRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -84,12 +84,12 @@ export const Compare = ({
   }
 
   const handleStart = useCallback(
-    (clientX: number) => {
+    (_clientX: number) => {
       if (slideMode === "drag") {
         setIsDragging(true);
       }
     },
-    [slideMode]
+    [slideMode],
   );
 
   const handleEnd = useCallback(() => {
@@ -110,17 +110,17 @@ export const Compare = ({
         });
       }
     },
-    [slideMode, isDragging]
+    [slideMode, isDragging],
   );
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => handleStart(e.clientX),
-    [handleStart]
+    [handleStart],
   );
   const handleMouseUp = useCallback(() => handleEnd(), [handleEnd]);
   const handleMouseMove = useCallback(
     (e: React.MouseEvent) => handleMove(e.clientX),
-    [handleMove]
+    [handleMove],
   );
 
   const handleTouchStart = useCallback(
@@ -129,7 +129,7 @@ export const Compare = ({
         handleStart(e.touches[0].clientX);
       }
     },
-    [handleStart, autoplay]
+    [handleStart, autoplay],
   );
 
   const handleTouchEnd = useCallback(() => {
@@ -144,7 +144,18 @@ export const Compare = ({
         handleMove(e.touches[0].clientX);
       }
     },
-    [handleMove, autoplay]
+    [handleMove, autoplay],
+  );
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        // Toggle between left and right sides when Enter/Space is pressed
+        setSliderXPercent(sliderXPercent > 50 ? 25 : 75);
+      }
+    },
+    [sliderXPercent],
   );
 
   return (
@@ -155,11 +166,14 @@ export const Compare = ({
         position: "relative",
         cursor: slideMode === "drag" ? "grab" : "col-resize",
       }}
+      role="button"
+      tabIndex={0}
       onMouseMove={handleMouseMove}
       onMouseLeave={mouseLeaveHandler}
       onMouseEnter={mouseEnterHandler}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
+      onKeyDown={handleKeyDown}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchMove={handleTouchMove}
@@ -199,7 +213,7 @@ export const Compare = ({
             <motion.div
               className={cn(
                 "absolute inset-0 z-20 rounded-2xl shrink-0 w-full h-full select-none overflow-hidden",
-                firstImageClassName
+                firstImageClassName,
               )}
               style={{
                 clipPath: `inset(0 ${100 - sliderXPercent}% 0 0)`,
@@ -211,7 +225,7 @@ export const Compare = ({
                 src={firstImage}
                 className={cn(
                   "absolute inset-0  z-20 rounded-2xl shrink-0 w-full h-full select-none",
-                  firstImageClassName
+                  firstImageClassName,
                 )}
                 draggable={false}
               />
@@ -225,7 +239,7 @@ export const Compare = ({
           <motion.img
             className={cn(
               "absolute top-0 left-0 z-[19]  rounded-2xl w-full h-full select-none",
-              secondImageClassname
+              secondImageClassname,
             )}
             alt="second image"
             src={secondImage}

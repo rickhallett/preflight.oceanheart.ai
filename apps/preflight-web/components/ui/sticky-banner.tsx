@@ -1,6 +1,7 @@
 "use client";
-import React, { SVGProps, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
+import type React from "react";
+import { type SVGProps, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export const StickyBanner = ({
@@ -75,6 +76,7 @@ const CloseIcon = (props: SVGProps<SVGSVGElement>) => {
       strokeLinejoin="round"
       {...props}
     >
+      <title>Close icon</title>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M18 6l-12 12" />
       <path d="M6 6l12 12" />

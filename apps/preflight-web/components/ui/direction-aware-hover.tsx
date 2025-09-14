@@ -1,8 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-
 import { AnimatePresence, motion } from "motion/react";
+import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export const DirectionAwareHover = ({
@@ -25,7 +24,7 @@ export const DirectionAwareHover = ({
   >("left");
 
   const handleMouseEnter = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
     if (!ref.current) return;
 
@@ -52,7 +51,7 @@ export const DirectionAwareHover = ({
 
   const getDirection = (
     ev: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    obj: HTMLElement
+    obj: HTMLElement,
   ) => {
     const { width: w, height: h, left, top } = obj.getBoundingClientRect();
     const x = ev.clientX - left - (w / 2) * (w > h ? h / w : 1);
@@ -67,7 +66,7 @@ export const DirectionAwareHover = ({
       ref={ref}
       className={cn(
         "md:h-96 w-60 h-60 md:w-96 bg-transparent rounded-lg overflow-hidden group/card relative",
-        className
+        className,
       )}
     >
       <AnimatePresence mode="wait">
@@ -90,7 +89,7 @@ export const DirectionAwareHover = ({
               alt="image"
               className={cn(
                 "h-full w-full object-cover scale-[1.15]",
-                imageClassName
+                imageClassName,
               )}
               width="1000"
               height="1000"
@@ -105,7 +104,7 @@ export const DirectionAwareHover = ({
             }}
             className={cn(
               "text-white absolute bottom-4 left-4 z-40",
-              childrenClassName
+              childrenClassName,
             )}
           >
             {children}

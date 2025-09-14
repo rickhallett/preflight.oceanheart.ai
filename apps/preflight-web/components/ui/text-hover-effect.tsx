@@ -1,6 +1,6 @@
 "use client";
-import React, { useRef, useEffect, useState } from "react";
 import { motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 
 export const TextHoverEffect = ({
   text,
@@ -39,6 +39,7 @@ export const TextHoverEffect = ({
       onMouseMove={(e) => setCursor({ x: e.clientX, y: e.clientY })}
       className="select-none"
     >
+      <title>Text hover effect</title>
       <defs>
         <linearGradient
           id="textGradient"

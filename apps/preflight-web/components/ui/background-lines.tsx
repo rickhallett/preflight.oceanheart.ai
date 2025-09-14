@@ -1,7 +1,7 @@
 "use client";
-import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
-import React from "react";
+import type React from "react";
+import { cn } from "@/lib/utils";
 
 export const BackgroundLines = ({
   children,
@@ -18,7 +18,7 @@ export const BackgroundLines = ({
     <div
       className={cn(
         "h-[20rem] md:h-screen w-full bg-white dark:bg-black",
-        className
+        className,
       )}
     >
       <SVG svgOptions={svgOptions} />
@@ -100,6 +100,7 @@ const SVG = ({
       transition={{ duration: 1 }}
       className="absolute inset-0 w-full h-full"
     >
+      <title>Background lines decoration</title>
       {paths.map((path, idx) => (
         <motion.path
           d={path}
@@ -117,7 +118,7 @@ const SVG = ({
             delay: Math.floor(Math.random() * 10),
             repeatDelay: Math.floor(Math.random() * 10 + 2),
           }}
-          key={`path-first-${idx}`}
+          key={`path-first-${path.substring(0, 15)}-${idx}`}
         />
       ))}
 
@@ -139,7 +140,7 @@ const SVG = ({
             delay: Math.floor(Math.random() * 10),
             repeatDelay: Math.floor(Math.random() * 10 + 2),
           }}
-          key={`path-second-${idx}`}
+          key={`path-second-${path.substring(0, 15)}-${idx}`}
         />
       ))}
     </motion.svg>

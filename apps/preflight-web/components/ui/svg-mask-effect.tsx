@@ -1,6 +1,6 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export const MaskContainer = ({
@@ -34,8 +34,8 @@ export const MaskContainer = ({
         );
       }
     };
-  }, []);
-  let maskSize = isHovered ? revealSize : size;
+  }, [updateMousePosition]);
+  const maskSize = isHovered ? revealSize : size;
 
   return (
     <motion.div
@@ -69,6 +69,7 @@ export const MaskContainer = ({
           onMouseLeave={() => {
             setIsHovered(false);
           }}
+          role="presentation"
           className="relative z-20 mx-auto max-w-4xl text-center text-4xl font-bold"
         >
           {children}

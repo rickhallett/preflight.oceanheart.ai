@@ -1,6 +1,5 @@
 "use client";
 import { motion } from "motion/react";
-import React from "react";
 
 export const LoaderOne = () => {
   const transition = (x: number) => {
@@ -108,6 +107,7 @@ export const LoaderThree = () => {
       strokeLinejoin="round"
       className="h-20 w-20 stroke-neutral-500 [--fill-final:var(--color-yellow-300)] [--fill-initial:var(--color-neutral-50)] dark:stroke-neutral-100 dark:[--fill-final:var(--color-yellow-500)] dark:[--fill-initial:var(--color-neutral-800)]"
     >
+      <title>Loading animation</title>
       <motion.path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <motion.path
         initial={{ pathLength: 0, fill: "var(--fill-initial)" }}
@@ -187,7 +187,7 @@ export const LoaderFive = ({ text }: { text: string }) => {
     <div className="font-sans font-bold [--shadow-color:var(--color-neutral-500)] dark:[--shadow-color:var(--color-neutral-100)]">
       {text.split("").map((char, i) => (
         <motion.span
-          key={i}
+          key={`char-${char}-${i}`}
           className="inline-block"
           initial={{ scale: 1, opacity: 0.5 }}
           animate={{

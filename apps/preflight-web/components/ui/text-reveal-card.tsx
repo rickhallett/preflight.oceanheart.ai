@@ -1,6 +1,7 @@
 "use client";
-import React, { useEffect, useRef, useState, memo } from "react";
 import { motion } from "motion/react";
+import type React from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { cn } from "@/lib/utils";
 
@@ -49,7 +50,7 @@ export const TextRevealCard = ({
   }
   function touchMoveHandler(event: React.TouchEvent<HTMLDivElement>) {
     event.preventDefault();
-    const clientX = event.touches[0]!.clientX;
+    const clientX = event.touches[0]?.clientX;
     if (cardRef.current) {
       const relativeX = clientX - left;
       setWidthPercentage((relativeX / localWidth) * 100);
@@ -66,9 +67,10 @@ export const TextRevealCard = ({
       onTouchEnd={mouseLeaveHandler}
       onTouchMove={touchMoveHandler}
       ref={cardRef}
+      role="presentation"
       className={cn(
         "bg-[#1d1c20] border border-white/[0.08] w-[40rem] rounded-lg p-8 relative overflow-hidden",
-        className
+        className,
       )}
     >
       {children}

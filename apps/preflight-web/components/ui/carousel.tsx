@@ -1,6 +1,6 @@
 "use client";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
-import { useState, useRef, useId, useEffect } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 interface SlideData {
   title: string;
@@ -187,7 +187,7 @@ export default function Carousel({ slides }: CarouselProps) {
       >
         {slides.map((slide, index) => (
           <Slide
-            key={index}
+            key={`slide-${slide.src}-${slide.title}`}
             slide={slide}
             index={index}
             current={current}

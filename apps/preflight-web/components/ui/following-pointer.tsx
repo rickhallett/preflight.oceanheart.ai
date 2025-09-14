@@ -1,6 +1,5 @@
+import { AnimatePresence, motion, useMotionValue } from "motion/react";
 import React, { useEffect, useState } from "react";
-
-import { motion, AnimatePresence, useMotionValue } from "motion/react";
 import { cn } from "@/lib/utils";
 
 export const FollowerPointerCard = ({
@@ -48,6 +47,7 @@ export const FollowerPointerCard = ({
         cursor: "none",
       }}
       ref={ref}
+      role="presentation"
       className={cn("relative", className)}
     >
       <AnimatePresence>
@@ -107,6 +107,7 @@ export const FollowPointer = ({
         width="1em"
         xmlns="http://www.w3.org/2000/svg"
       >
+        <title>Cursor pointer icon</title>
         <path d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103z"></path>
       </svg>
       <motion.div

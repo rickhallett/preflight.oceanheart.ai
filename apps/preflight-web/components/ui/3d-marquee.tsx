@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 export const ThreeDMarquee = ({
   images,
@@ -38,14 +39,14 @@ export const ThreeDMarquee = ({
                   repeat: Infinity,
                   repeatType: "reverse",
                 }}
-                key={colIndex + "marquee"}
+                key={`col-${colIndex}-marquee`}
                 className="flex flex-col items-start gap-8"
               >
                 <GridLineVertical className="-left-4" offset="80px" />
                 {subarray.map((image, imageIndex) => (
-                  <div className="relative" key={imageIndex + image}>
+                  <div className="relative" key={`image-${image}-${colIndex}`}>
                     <GridLineHorizontal className="-top-4" offset="20px" />
-                    <motion.img
+                    <motion.div
                       whileHover={{
                         y: -10,
                       }}
@@ -53,13 +54,16 @@ export const ThreeDMarquee = ({
                         duration: 0.3,
                         ease: "easeInOut",
                       }}
-                      key={imageIndex + image}
-                      src={image}
-                      alt={`Image ${imageIndex + 1}`}
-                      className="aspect-[970/700] rounded-lg object-cover ring ring-gray-950/5 hover:shadow-2xl"
-                      width={970}
-                      height={700}
-                    />
+                      key={`motion-${image}-${colIndex}`}
+                    >
+                      <Image
+                        src={image}
+                        alt={`Marquee item ${imageIndex + 1}`}
+                        className="aspect-[970/700] rounded-lg object-cover ring ring-gray-950/5 hover:shadow-2xl"
+                        width={970}
+                        height={700}
+                      />
+                    </motion.div>
                   </div>
                 ))}
               </motion.div>

@@ -1,12 +1,12 @@
 "use client";
-import React from "react";
 import { motion } from "motion/react";
+import React from "react";
 import { cn } from "@/lib/utils";
 
 export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
   const rows = new Array(150).fill(1);
   const cols = new Array(100).fill(1);
-  let colors = [
+  const colors = [
     "#93c5fd",
     "#f9a8d4",
     "#86efac",
@@ -34,7 +34,7 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
     >
       {rows.map((_, i) => (
         <motion.div
-          key={`row` + i}
+          key={`box-row-${i}`}
           className="relative h-8 w-16 border-l border-slate-700"
         >
           {cols.map((_, j) => (
@@ -46,7 +46,7 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
               animate={{
                 transition: { duration: 2 },
               }}
-              key={`col` + j}
+              key={`box-col-${i}-${j}`}
               className="relative h-8 w-16 border-t border-r border-slate-700"
             >
               {j % 2 === 0 && i % 2 === 0 ? (
@@ -58,6 +58,7 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
                   stroke="currentColor"
                   className="pointer-events-none absolute -top-[14px] -left-[22px] h-6 w-10 stroke-[1px] text-slate-700"
                 >
+                  <title>Cross pattern</title>
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

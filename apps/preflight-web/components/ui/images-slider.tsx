@@ -1,7 +1,8 @@
 "use client";
+import { AnimatePresence, motion } from "motion/react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "motion/react";
-import React, { useEffect, useState } from "react";
 
 export const ImagesSlider = ({
   images,
@@ -21,24 +22,24 @@ export const ImagesSlider = ({
   direction?: "up" | "down";
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [_loading, setLoading] = useState(false);
   const [loadedImages, setLoadedImages] = useState<string[]>([]);
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex + 1 === images.length ? 0 : prevIndex + 1
+      prevIndex + 1 === images.length ? 0 : prevIndex + 1,
     );
   };
 
   const handlePrevious = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex - 1 < 0 ? images.length - 1 : prevIndex - 1
+      prevIndex - 1 < 0 ? images.length - 1 : prevIndex - 1,
     );
   };
 
   useEffect(() => {
     loadImages();
-  }, []);
+  }, [loadImages]);
 
   const loadImages = () => {
     setLoading(true);
@@ -81,7 +82,7 @@ export const ImagesSlider = ({
       window.removeEventListener("keydown", handleKeyDown);
       clearInterval(interval);
     };
-  }, []);
+  }, [autoplay, handleNext, handlePrevious]);
 
   const slideVariants = {
     initial: {
@@ -120,7 +121,7 @@ export const ImagesSlider = ({
     <div
       className={cn(
         "overflow-hidden h-full w-full relative flex items-center justify-center",
-        className
+        className,
       )}
       style={{
         perspective: "1000px",

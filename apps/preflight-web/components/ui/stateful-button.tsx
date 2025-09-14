@@ -1,7 +1,7 @@
 "use client";
+import { motion, useAnimate } from "motion/react";
+import type React from "react";
 import { cn } from "@/lib/utils";
-import React from "react";
-import { motion, AnimatePresence, useAnimate } from "motion/react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
@@ -131,6 +131,7 @@ const Loader = () => {
       strokeLinejoin="round"
       className="loader text-white"
     >
+      <title>Loading spinner</title>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3a9 9 0 1 0 9 9" />
     </motion.svg>
@@ -160,6 +161,7 @@ const CheckIcon = () => {
       strokeLinejoin="round"
       className="check text-white"
     >
+      <title>Success check icon</title>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
       <path d="M9 12l2 2l4 -4" />

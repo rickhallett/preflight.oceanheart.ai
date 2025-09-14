@@ -1,15 +1,16 @@
 "use client";
-import { cn } from "@/lib/utils";
-import React, { useRef, useState, useEffect } from "react";
 import {
+  animate,
   motion,
+  useAnimationControls,
   useMotionValue,
   useSpring,
   useTransform,
-  animate,
   useVelocity,
-  useAnimationControls,
 } from "motion/react";
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
 export const DraggableCardBody = ({
   className,
@@ -112,7 +113,7 @@ export const DraggableCardBody = ({
       onDragStart={() => {
         document.body.style.cursor = "grabbing";
       }}
-      onDragEnd={(event, info) => {
+      onDragEnd={(_event, info) => {
         document.body.style.cursor = "default";
 
         controls.start({

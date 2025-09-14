@@ -1,10 +1,9 @@
 "use client";
 
-import { useRef } from "react";
-import { motion } from "motion/react";
 import DottedMap from "dotted-map";
-
+import { motion } from "motion/react";
 import { useTheme } from "next-themes";
+import { useRef } from "react";
 
 interface MapProps {
   dots?: Array<{
@@ -38,7 +37,7 @@ export default function WorldMap({
 
   const createCurvedPath = (
     start: { x: number; y: number },
-    end: { x: number; y: number }
+    end: { x: number; y: number },
   ) => {
     const midX = (start.x + end.x) / 2;
     const midY = Math.min(start.y, end.y) - 50;
@@ -60,11 +59,12 @@ export default function WorldMap({
         viewBox="0 0 800 400"
         className="w-full h-full absolute inset-0 pointer-events-none select-none"
       >
+        <title>World map with connection lines</title>
         {dots.map((dot, i) => {
           const startPoint = projectPoint(dot.start.lat, dot.start.lng);
           const endPoint = projectPoint(dot.end.lat, dot.end.lng);
           return (
-            <g key={`path-group-${i}`}>
+            <g key={`path-${dot.start.lat}-${dot.start.lng}-${dot.end.lat}-${dot.end.lng}-${i}`}>
               <motion.path
                 d={createCurvedPath(startPoint, endPoint)}
                 fill="none"
@@ -81,7 +81,7 @@ export default function WorldMap({
                   delay: 0.5 * i,
                   ease: "easeOut",
                 }}
-                key={`start-upper-${i}`}
+                key={`path-${dot.start.lat}-${dot.start.lng}-to-${dot.end.lat}-${dot.end.lng}`}
               ></motion.path>
             </g>
           );
@@ -97,8 +97,8 @@ export default function WorldMap({
         </defs>
 
         {dots.map((dot, i) => (
-          <g key={`points-group-${i}`}>
-            <g key={`start-${i}`}>
+          <g key={`points-${dot.start.lat}-${dot.start.lng}-${dot.end.lat}-${dot.end.lng}-${i}`}>
+            <g key={`start-${dot.start.lat}-${dot.start.lng}-${i}`}>
               <circle
                 cx={projectPoint(dot.start.lat, dot.start.lng).x}
                 cy={projectPoint(dot.start.lat, dot.start.lng).y}
@@ -130,7 +130,7 @@ export default function WorldMap({
                 />
               </circle>
             </g>
-            <g key={`end-${i}`}>
+            <g key={`end-${dot.end.lat}-${dot.end.lng}-${i}`}>
               <circle
                 cx={projectPoint(dot.end.lat, dot.end.lng).x}
                 cy={projectPoint(dot.end.lat, dot.end.lng).y}

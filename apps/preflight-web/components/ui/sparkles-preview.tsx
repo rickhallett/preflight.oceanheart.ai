@@ -1,12 +1,13 @@
 "use client";
-import { SparklesCore } from "./sparkles";
 import Image from "next/image";
+import { SparklesCore } from "./sparkles";
 
 export function SparklesPreview() {
   return (
     <div className="h-[40rem] w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
-      <h1 className="md:text-7xl text-3xl lg:text-9xl font-bold text-center text-white relative z-20">
-        Preflight <span className="text-primary-500">AI</span> <span className="text-primary-500 font-normal text-4xl">v1.0</span>
+      <h1 className="md:text-7xl text-5xl lg:text-9xl font-bold text-center text-white relative z-20">
+        Preflight <span className="text-primary-500">AI</span>{" "}
+        <span className="text-primary-500 font-normal text-4xl">v1.0</span>
       </h1>
       <div className="w-[40rem] h-40 relative">
         {/* Gradients */}

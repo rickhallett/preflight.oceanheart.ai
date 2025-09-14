@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { SparklesPreview } from "@/components/ui/sparkles-preview";
 
 export default function Home() {
