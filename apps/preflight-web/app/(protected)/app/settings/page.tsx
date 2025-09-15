@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { Tabs } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/tailwindcss-buttons";
 import { Bell, Shield, Palette, Globe } from "lucide-react";
 
 export default function SettingsPage() {
@@ -101,9 +100,9 @@ export default function SettingsPage() {
                   <p className="text-white font-medium">Two-Factor Authentication</p>
                 </div>
                 <p className="text-sm text-gray-400 mb-4">Add an extra layer of security to your account</p>
-                <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors">
                   Enable 2FA
-                </Button>
+                </button>
               </div>
               
               <div className="space-y-2">
@@ -116,9 +115,9 @@ export default function SettingsPage() {
                 <Input type="password" id="new-password" placeholder="Enter new password" />
               </div>
               
-              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+              <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors">
                 Update Password
-              </Button>
+              </button>
             </div>
           </div>
         </div>
@@ -175,12 +174,12 @@ export default function SettingsPage() {
       </div>
       
       <div className="mt-6 flex justify-end space-x-4">
-        <Button className="bg-gray-700 hover:bg-gray-600 text-white">
+        <button className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
           Cancel
-        </Button>
-        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+        </button>
+        <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors">
           Save Changes
-        </Button>
+        </button>
       </div>
     </div>
   );

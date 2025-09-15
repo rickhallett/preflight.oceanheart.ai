@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { Button } from "@/components/ui/tailwindcss-buttons";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { LogOut, User, Mail, Calendar } from "lucide-react";
 
@@ -76,25 +75,25 @@ export default function ProfilePage() {
           <div className="pt-6 border-t border-gray-800">
             <h3 className="text-lg font-semibold text-white mb-4">Actions</h3>
             <div className="flex flex-wrap gap-4">
-              <Button
+              <button
                 onClick={handleSignOut}
-                className="flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white"
+                className="flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
               >
                 <LogOut className="w-4 h-4" />
                 <span>Sign Out</span>
-              </Button>
+              </button>
               
-              <Button
-                className="bg-gray-700 hover:bg-gray-600 text-white"
+              <button
+                className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors"
               >
                 Edit Profile
-              </Button>
+              </button>
               
-              <Button
-                className="bg-gray-700 hover:bg-gray-600 text-white"
+              <button
+                className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors"
               >
                 Change Password
-              </Button>
+              </button>
             </div>
           </div>
         </div>

@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { Button } from "@/components/ui/tailwindcss-buttons";
 import { SparklesCore } from "@/components/ui/sparkles";
 
 export default function LoginPage() {
@@ -39,12 +38,12 @@ export default function LoginPage() {
         </div>
         
         <div className="space-y-4">
-          <Button
+          <button
             onClick={handleLogin}
             className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200"
           >
             Sign in with Oceanheart
-          </Button>
+          </button>
           
           <p className="text-center text-xs text-gray-500">
             By signing in, you agree to our Terms of Service and Privacy Policy
