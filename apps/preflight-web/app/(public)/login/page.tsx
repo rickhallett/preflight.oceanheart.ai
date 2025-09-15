@@ -1,10 +1,26 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { SparklesCore } from "@/components/ui/sparkles";
+import { signIn, setStubCookie } from "@/lib/auth/stub";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const [email, setEmail] = useState("john.doe@example.com");
+  const router = useRouter();
+  
   const handleLogin = () => {
+    // Use stub auth for testing
+    signIn(email);
+    setStubCookie();
+    
+    // Redirect to app after a brief delay to allow cookie to be set
+    setTimeout(() => {
+      router.push("/app");
+    }, 100);
+  };
+  
+  const handleOceanheartLogin = () => {
     const isDev = process.env.NODE_ENV === "development";
     const returnTo = isDev 
       ? "http://localhost:3000/app"
@@ -38,8 +54,32 @@ export default function LoginPage() {
         </div>
         
         <div className="space-y-4">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter email for testing"
+            className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500"
+          />
+          
           <button
             onClick={handleLogin}
+            className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200"
+          >
+            Sign in (Test Mode)
+          </button>
+          
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-700"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-black text-gray-400">Or</span>
+            </div>
+          </div>
+          
+          <button
+            onClick={handleOceanheartLogin}
             className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200"
           >
             Sign in with Oceanheart
