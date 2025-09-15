@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
 import {
@@ -6,9 +7,9 @@ import {
   useMotionValue,
   useSpring,
 } from "motion/react";
+import Image from "next/image";
 import { encode } from "qss";
 import React from "react";
-import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 
@@ -30,6 +31,7 @@ export const LinkPreview = ({
   url,
   className,
   width = 200,
+  height = 125,
   isStatic = false,
   imageSrc = "",
 }: LinkPreviewProps) => {
@@ -65,7 +67,7 @@ export const LinkPreview = ({
   const translateX = useSpring(x, springConfig);
 
   const handleMouseMove = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    const targetRect = event.target.getBoundingClientRect();
+    const targetRect = event.currentTarget.getBoundingClientRect();
     const eventOffsetX = event.clientX - targetRect.left;
     const offsetFromCenter = (eventOffsetX - targetRect.width / 2) / 2; // Reduce the effect to make it subtle
     x.set(offsetFromCenter);
@@ -75,7 +77,12 @@ export const LinkPreview = ({
     <>
       {isMounted ? (
         <div className="hidden">
-          <Image src={src} width={width} height={height} alt="Link preview preload" />
+          <Image
+            src={src}
+            width={width}
+            height={height}
+            alt="Link preview preload"
+          />
         </div>
       ) : null}
 

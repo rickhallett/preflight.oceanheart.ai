@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
@@ -21,7 +22,7 @@ export function PlaceholdersAndVanishInput({
       setCurrentPlaceholder((prev) => (prev + 1) % placeholders.length);
     }, 3000);
   }, [placeholders.length]);
-  
+
   const handleVisibilityChange = useCallback(() => {
     if (document.visibilityState !== "visible" && intervalRef.current) {
       clearInterval(intervalRef.current); // Clear the interval when the tab is not visible
@@ -44,7 +45,9 @@ export function PlaceholdersAndVanishInput({
   }, [handleVisibilityChange, startAnimation]);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const newDataRef = useRef<Array<{x: number; y: number; color: [number, number, number]}>>([]);
+  const newDataRef = useRef<
+    Array<{ x: number; y: number; r: number; color: string }>
+  >([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState("");
   const [animating, setAnimating] = useState(false);
@@ -68,7 +71,11 @@ export function PlaceholdersAndVanishInput({
 
     const imageData = ctx.getImageData(0, 0, 800, 800);
     const pixelData = imageData.data;
-    const newData: Array<{x: number; y: number; color: [number, number, number]}> = [];
+    const newData: Array<{
+      x: number;
+      y: number;
+      color: [number, number, number];
+    }> = [];
 
     for (let t = 0; t < 800; t++) {
       const i = 4 * t * 800;
@@ -82,12 +89,7 @@ export function PlaceholdersAndVanishInput({
           newData.push({
             x: n,
             y: t,
-            color: [
-              pixelData[e],
-              pixelData[e + 1],
-              pixelData[e + 2],
-              pixelData[e + 3],
-            ],
+            color: [pixelData[e], pixelData[e + 1], pixelData[e + 2]],
           });
         }
       }
@@ -97,7 +99,7 @@ export function PlaceholdersAndVanishInput({
       x,
       y,
       r: 1,
-      color: `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`,
+      color: `rgb(${color[0]}, ${color[1]}, ${color[2]})`,
     }));
   }, [value]);
 

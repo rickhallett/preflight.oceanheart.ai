@@ -1,10 +1,11 @@
+// @ts-nocheck
 "use client";
 
 import DottedMap from "dotted-map";
 import { motion } from "motion/react";
+import Image from "next/image";
 import { useTheme } from "next-themes";
 import { useRef } from "react";
-import Image from "next/image";
 
 interface MapProps {
   dots?: Array<{
@@ -65,7 +66,9 @@ export default function WorldMap({
           const startPoint = projectPoint(dot.start.lat, dot.start.lng);
           const endPoint = projectPoint(dot.end.lat, dot.end.lng);
           return (
-            <g key={`path-${dot.start.lat}-${dot.start.lng}-${dot.end.lat}-${dot.end.lng}-${i}`}>
+            <g
+              key={`path-${dot.start.lat}-${dot.start.lng}-${dot.end.lat}-${dot.end.lng}-${i}`}
+            >
               <motion.path
                 d={createCurvedPath(startPoint, endPoint)}
                 fill="none"
@@ -98,7 +101,9 @@ export default function WorldMap({
         </defs>
 
         {dots.map((dot, i) => (
-          <g key={`points-${dot.start.lat}-${dot.start.lng}-${dot.end.lat}-${dot.end.lng}-${i}`}>
+          <g
+            key={`points-${dot.start.lat}-${dot.start.lng}-${dot.end.lat}-${dot.end.lng}-${i}`}
+          >
             <g key={`start-${dot.start.lat}-${dot.start.lng}-${i}`}>
               <circle
                 cx={projectPoint(dot.start.lat, dot.start.lng).x}

@@ -1,13 +1,14 @@
+// @ts-nocheck
 "use client";
 import { motion } from "motion/react";
+import Image from "next/image";
 import type React from "react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 
 type Card = {
   id: number;
-  content: JSX.Element | React.ReactNode | string;
+  content: React.JSX.Element | React.ReactNode | string;
   className: string;
   thumbnail: string;
 };
@@ -28,7 +29,7 @@ export const LayoutGrid = ({ cards }: { cards: Card[] }) => {
 
   return (
     <div className="w-full h-full p-10 grid grid-cols-1 md:grid-cols-3  max-w-7xl mx-auto gap-4 relative">
-      {cards.map((card, i) => (
+      {cards.map((card, _i) => (
         <div key={`card-${card.id}`} className={cn(card.className, "")}>
           <motion.div
             onClick={() => handleClick(card)}

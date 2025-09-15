@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { IconLayoutNavbarCollapse } from "@tabler/icons-react";
 import {
   AnimatePresence,

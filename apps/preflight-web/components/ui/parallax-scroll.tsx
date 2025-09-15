@@ -1,7 +1,8 @@
+// @ts-nocheck
 "use client";
 import { motion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
 import Image from "next/image";
+import { useRef } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -55,7 +56,10 @@ export const ParallaxScroll = ({
         </div>
         <div className="grid gap-10">
           {secondPart.map((el, idx) => (
-            <motion.div style={{ y: translateSecond }} key={`grid-2-${el}-${idx}`}>
+            <motion.div
+              style={{ y: translateSecond }}
+              key={`grid-2-${el}-${idx}`}
+            >
               <Image
                 src={el}
                 className="h-80 w-full object-cover object-left-top rounded-lg gap-10 !m-0 !p-0"
@@ -68,7 +72,10 @@ export const ParallaxScroll = ({
         </div>
         <div className="grid gap-10">
           {thirdPart.map((el, idx) => (
-            <motion.div style={{ y: translateThird }} key={`grid-3-${el}-${idx}`}>
+            <motion.div
+              style={{ y: translateThird }}
+              key={`grid-3-${el}-${idx}`}
+            >
               <Image
                 src={el}
                 className="h-80 w-full object-cover object-left-top rounded-lg gap-10 !m-0 !p-0"

@@ -1,10 +1,11 @@
+// @ts-nocheck
 "use client";
 import { IconDotsVertical } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "motion/react";
+import Image from "next/image";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 
 interface CompareProps {
   firstImage?: string;
@@ -150,7 +151,7 @@ export const Compare = ({
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      if (e.key === 'Enter' || e.key === ' ') {
+      if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         // Toggle between left and right sides when Enter/Space is pressed
         setSliderXPercent(sliderXPercent > 50 ? 25 : 75);

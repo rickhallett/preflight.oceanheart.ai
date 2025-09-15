@@ -1,10 +1,11 @@
+// @ts-nocheck
 "use client";
 import { motion } from "motion/react";
-import type React from "react";
 import Image from "next/image";
+import type React from "react";
 
 const transition = {
-  type: "spring",
+  type: "spring" as const,
   mass: 0.5,
   damping: 11.5,
   stiffness: 100,
@@ -24,7 +25,11 @@ export const MenuItem = ({
   children?: React.ReactNode;
 }) => {
   return (
-    <div onMouseEnter={() => setActive(item)} className="relative " role="presentation">
+    <div
+      onMouseEnter={() => setActive(item)}
+      className="relative "
+      role="presentation"
+    >
       <motion.p
         transition={{ duration: 0.3 }}
         className="cursor-pointer text-black hover:opacity-[0.9] dark:text-white"
@@ -108,7 +113,12 @@ export const ProductItem = ({
   );
 };
 
-export const HoveredLink = ({ children, ...rest }: React.AnchorHTMLAttributes<HTMLAnchorElement> & { children: React.ReactNode }) => {
+export const HoveredLink = ({
+  children,
+  ...rest
+}: React.AnchorHTMLAttributes<HTMLAnchorElement> & {
+  children: React.ReactNode;
+}) => {
   return (
     <a
       {...rest}

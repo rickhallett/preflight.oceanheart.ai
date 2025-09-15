@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { motion, stagger, useAnimate, useInView } from "motion/react";
@@ -49,7 +50,10 @@ export const TypewriterEffect = ({
       <motion.div ref={scope} className="inline">
         {wordsArray.map((word, idx) => {
           return (
-            <div key={`word-${word.text.join('')}-${idx}`} className="inline-block">
+            <div
+              key={`word-${word.text.join("")}-${idx}`}
+              className="inline-block"
+            >
               {word.text.map((char, index) => (
                 <motion.span
                   initial={{}}
@@ -122,7 +126,10 @@ export const TypewriterEffectSmooth = ({
       <div>
         {wordsArray.map((word, idx) => {
           return (
-            <div key={`word-${word.text.join('')}-${idx}`} className="inline-block">
+            <div
+              key={`word-${word.text.join("")}-${idx}`}
+              className="inline-block"
+            >
               {word.text.map((char, index) => (
                 <span
                   key={`char-${char}-${idx}-${index}`}

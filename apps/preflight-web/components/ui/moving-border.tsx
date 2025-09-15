@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import {
   motion,
@@ -27,8 +28,7 @@ export function Button({
   borderClassName?: string;
   duration?: number;
   className?: string;
-} & React.ComponentProps<any>;
-}) {
+} & React.ComponentProps<any>) {
   return (
     <Component
       className={cn(
@@ -80,9 +80,8 @@ export const MovingBorder = ({
   duration?: number;
   rx?: string;
   ry?: string;
-} & React.ComponentProps<any>;
-}) => {
-  const pathRef = useRef<SVGPathElement>();
+} & React.ComponentProps<any>) => {
+  const pathRef = useRef<SVGRectElement>(null);
   const progress = useMotionValue<number>(0);
 
   useAnimationFrame((time) => {

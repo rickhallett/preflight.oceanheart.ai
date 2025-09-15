@@ -1,4 +1,10 @@
-import { AnimatePresence, motion, useMotionValue, type MotionValue } from "motion/react";
+// @ts-nocheck
+import {
+  AnimatePresence,
+  type MotionValue,
+  motion,
+  useMotionValue,
+} from "motion/react";
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 

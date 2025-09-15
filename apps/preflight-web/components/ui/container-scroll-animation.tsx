@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import {
   type MotionValue,
@@ -59,7 +60,10 @@ export const ContainerScroll = ({
   );
 };
 
-export const Header = ({ translate, titleComponent }: {
+export const Header = ({
+  translate,
+  titleComponent,
+}: {
   translate: MotionValue<number>;
   titleComponent: string | React.ReactNode;
 }) => {

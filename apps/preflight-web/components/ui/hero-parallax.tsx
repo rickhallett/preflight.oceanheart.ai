@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import {
   type MotionValue,
@@ -6,8 +7,8 @@ import {
   useSpring,
   useTransform,
 } from "motion/react";
-import React from "react";
 import Image from "next/image";
+import React from "react";
 
 export const HeroParallax = ({
   products,

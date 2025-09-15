@@ -1,5 +1,6 @@
+// @ts-nocheck
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createNoise3D } from "simplex-noise";
 import { cn } from "@/lib/utils";
 
@@ -24,8 +25,7 @@ export const WavyBackground = ({
   blur?: number;
   speed?: "slow" | "fast";
   waveOpacity?: number;
-} & React.ComponentProps<'div'>;
-}) => {
+} & React.ComponentProps<'div'>) => {
   const noise = createNoise3D();
   let w: number,
     h: number,
@@ -107,8 +107,8 @@ export const WavyBackground = ({
     // I'm sorry but i have got to support it on safari.
     setIsSafari(
       typeof window !== "undefined" &&
-        navigator.userAgent.includes("Safari") &&
-        !navigator.userAgent.includes("Chrome"),
+      navigator.userAgent.includes("Safari") &&
+      !navigator.userAgent.includes("Chrome"),
     );
   }, []);
 

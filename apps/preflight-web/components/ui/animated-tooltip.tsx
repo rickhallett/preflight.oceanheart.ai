@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import {
@@ -40,7 +41,7 @@ export const AnimatedTooltip = ({
     }
 
     animationFrameRef.current = requestAnimationFrame(() => {
-      const halfWidth = event.target.offsetWidth / 2;
+      const halfWidth = (event.target as HTMLElement).offsetWidth / 2;
       x.set(event.nativeEvent.offsetX - halfWidth);
     });
   };

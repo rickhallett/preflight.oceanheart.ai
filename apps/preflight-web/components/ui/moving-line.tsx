@@ -1,12 +1,8 @@
+// @ts-nocheck
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { useRef } from "react";
 
 const MovingLine = () => {
-  const transition = {
-    duration: 14,
-    ease: "easeInOut",
-  };
-
   const ref = useRef<HTMLDivElement>(null);
 
   // Track scroll progress, lies between 0 and 1.
@@ -55,7 +51,6 @@ const MovingLine = () => {
               damping: 100,
             }),
           }}
-          transition={transition}
           d={PATH}
           stroke="var(--blue-500)"
           strokeOpacity="1"

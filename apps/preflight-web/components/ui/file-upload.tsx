@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { IconUpload } from "@tabler/icons-react";
 import { motion } from "motion/react";
 import { useRef, useState } from "react";

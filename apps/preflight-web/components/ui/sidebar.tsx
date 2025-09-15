@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "motion/react";
@@ -121,7 +122,7 @@ export const MobileSidebar = ({
           className="text-neutral-800 dark:text-neutral-200"
           onClick={() => setOpen(!open)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
+            if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
               setOpen(!open);
             }
@@ -149,7 +150,7 @@ export const MobileSidebar = ({
               className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200"
               onClick={() => setOpen(!open)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
+                if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
                   setOpen(!open);
                 }

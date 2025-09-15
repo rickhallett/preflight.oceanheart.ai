@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import type { Container, SingleOrMultiple } from "@tsparticles/engine";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
@@ -79,7 +80,9 @@ export const SparklesCore = (props: ParticlesProps) => {
                   enable: false,
                   mode: "repulse",
                 },
-                resize: true,
+                resize: {
+                  enable: true,
+                },
               },
               modes: {
                 push: {

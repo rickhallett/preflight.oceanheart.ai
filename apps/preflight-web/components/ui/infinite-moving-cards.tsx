@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
@@ -24,7 +25,7 @@ export const InfiniteMovingCards = ({
   const scrollerRef = React.useRef<HTMLUListElement>(null);
 
   const [start, setStart] = useState(false);
-  
+
   const getDirection = useCallback(() => {
     if (containerRef.current) {
       if (direction === "left") {

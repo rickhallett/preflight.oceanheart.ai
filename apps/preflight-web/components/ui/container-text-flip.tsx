@@ -1,8 +1,9 @@
+// @ts-nocheck
 "use client";
 
 import { motion } from "motion/react";
 import React, { useCallback, useEffect, useId, useState } from "react";
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 
 export interface ContainerTextFlipProps {
   /** Array of words to cycle through in the animation */

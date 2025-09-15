@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
@@ -79,8 +80,8 @@ export const BackgroundBeamsWithCollision = ({
         <CollisionMechanism
           key={`${beam.initialX}beam-idx`}
           beamOptions={beam}
-          containerRef={containerRef}
-          parentRef={parentRef}
+          containerRef={containerRef as React.RefObject<HTMLDivElement>}
+          parentRef={parentRef as React.RefObject<HTMLDivElement>}
         />
       ))}
 

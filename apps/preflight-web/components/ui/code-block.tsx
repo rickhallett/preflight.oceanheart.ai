@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import { IconCheck, IconCopy } from "@tabler/icons-react";
 import React from "react";

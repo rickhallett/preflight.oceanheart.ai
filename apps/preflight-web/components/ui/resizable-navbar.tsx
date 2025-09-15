@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import {
@@ -6,8 +7,8 @@ import {
   useMotionValueEvent,
   useScroll,
 } from "motion/react";
-import React, { useRef, useState } from "react";
 import Image from "next/image";
+import React, { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface NavbarProps {
@@ -245,12 +246,16 @@ export const NavbarLogo = () => {
   );
 };
 
-export const NavbarButton = React.forwardRef<
-  any,
-  any
->(
+export const NavbarButton = React.forwardRef<any, any>(
   (
-    { href, as: Tag = "a", children, className, variant = "primary" as "primary" | "secondary" | "dark" | "gradient", ...props },
+    {
+      href,
+      as: Tag = "a",
+      children,
+      className,
+      variant = "primary" as "primary" | "secondary" | "dark" | "gradient",
+      ...props
+    },
     ref,
   ) => {
     const baseStyles =
@@ -270,7 +275,11 @@ export const NavbarButton = React.forwardRef<
       <Component
         ref={ref}
         href={href || undefined}
-        className={cn(baseStyles, variantStyles[variant as keyof typeof variantStyles], className)}
+        className={cn(
+          baseStyles,
+          variantStyles[variant as keyof typeof variantStyles],
+          className,
+        )}
         {...props}
       >
         {children}

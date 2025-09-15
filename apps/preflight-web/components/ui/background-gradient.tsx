@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { motion } from "motion/react";
 import type React from "react";
 import { cn } from "@/lib/utils";

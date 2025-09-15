@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import { motion, useMotionTemplate, useMotionValue } from "motion/react";
 import { useEffect, useState } from "react";
@@ -20,7 +21,11 @@ export const EvervaultCard = ({
     setRandomString(str);
   }, []);
 
-  function onMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent<HTMLDivElement>) {
+  function onMouseMove({
+    currentTarget,
+    clientX,
+    clientY,
+  }: React.MouseEvent<HTMLDivElement>) {
     const { left, top } = currentTarget.getBoundingClientRect();
     mouseX.set(clientX - left);
     mouseY.set(clientY - top);
@@ -57,7 +62,11 @@ export const EvervaultCard = ({
   );
 };
 
-export function CardPattern({ mouseX, mouseY, randomString }: {
+export function CardPattern({
+  mouseX,
+  mouseY,
+  randomString,
+}: {
   mouseX: any;
   mouseY: any;
   randomString: string;

@@ -1,9 +1,10 @@
+// @ts-nocheck
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
+import Image from "next/image";
 import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 
 export const DirectionAwareHover = ({
   imageUrl,

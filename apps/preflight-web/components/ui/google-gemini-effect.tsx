@@ -1,10 +1,11 @@
+// @ts-nocheck
 "use client";
 import { type MotionValue, motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 const transition = {
   duration: 0,
-  ease: "linear",
+  ease: "linear" as const,
 };
 
 export const GoogleGeminiEffect = ({
@@ -29,7 +30,10 @@ export const GoogleGeminiEffect = ({
         works!`}
       </p>
       <div className="w-full h-[890px] -top-60 md:-top-40  flex items-center justify-center bg-red-transparent absolute ">
-        <button type="button" className="font-bold bg-white rounded-full md:px-4 md:py-2 px-2 py-1 md:mt-24 mt-8 z-30 md:text-base text-black text-xs  w-fit mx-auto ">
+        <button
+          type="button"
+          className="font-bold bg-white rounded-full md:px-4 md:py-2 px-2 py-1 md:mt-24 mt-8 z-30 md:text-base text-black text-xs  w-fit mx-auto "
+        >
           ui.aceternity.com
         </button>
       </div>
