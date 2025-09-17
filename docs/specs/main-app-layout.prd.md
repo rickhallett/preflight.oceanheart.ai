@@ -64,7 +64,7 @@ This document defines the requirements for transforming the current Preflight AI
    - JWT token verification from `oh_session` cookie
    - Redirect to Oceanheart Passport for authentication
    - Environment-aware redirect URLs:
-     - Development: `http://localhost:3000` → `passport.oceanheart.ai/auth?returnTo=http://localhost:3000/app`
+     - Development: `http://localhost:3002` → `passport.oceanheart.ai/auth?returnTo=http://localhost:3002/app`
      - Production: `watson.oceanheart.ai` → `passport.oceanheart.ai/auth?returnTo=https://watson.oceanheart.ai/app`
 
 3. **Component Architecture**
@@ -130,7 +130,7 @@ This document defines the requirements for transforming the current Preflight AI
    // lib/auth/utils.ts
    export function getAuthUrl(returnPath: string) {
      const isDev = process.env.NODE_ENV === 'development'
-     const baseUrl = isDev ? 'http://localhost:3000' : 'https://watson.oceanheart.ai'
+     const baseUrl = isDev ? 'http://localhost:3002' : 'https://watson.oceanheart.ai'
      const returnTo = `${baseUrl}${returnPath}`
      return `https://passport.oceanheart.ai/auth?returnTo=${encodeURIComponent(returnTo)}`
    }

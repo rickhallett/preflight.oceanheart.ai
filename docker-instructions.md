@@ -5,20 +5,20 @@
 When running the application locally with Docker, the services are available at:
 
 ### Backend API
-- **URL:** `http://localhost:8000`
+- **URL:** `http://localhost:8002`
 - **Service:** FastAPI application (preflight-api)
 - **Available Endpoints:**
   - `/health` - Health check endpoint (returns `{"status": "ok"}`)
   - `/docs` - FastAPI automatic documentation (Swagger UI)
   - `/redoc` - Alternative API documentation (ReDoc)
 
-### Frontend Web
-- **URL:** `http://localhost:3000`
+- ### Frontend Web
+- **URL:** `http://localhost:3002`
 - **Service:** Next.js application (preflight-web)
 - **Status:** Fixed - using Next.js default port 3000 for both dev and production
 
 ### Database
-- **PostgreSQL:** `localhost:5433`
+- **PostgreSQL:** `localhost:5003`
 - **Credentials:**
   - Database: `preflight_dev`
   - User: `preflight`
@@ -52,14 +52,14 @@ docker-compose down -v
 **Fixed:** Added development stage to Dockerfile with proper dependencies. Run `docker-compose up --build` to rebuild.
 
 ### Web container fails with "unknown option '--host'"
-**Fixed:** Next.js uses `-H` flag instead of `--host`. Updated package.json dev script to use `-H 0.0.0.0` and changed port to 3000 (Next.js default).
+**Fixed:** Next.js uses `-H` flag instead of `--host`. Updated package.json dev script to use `-H 0.0.0.0 -p 3002` for the standardized port.
 
 ### Turbopack error "leaves the filesystem root"
 **Fixed:** Removed hardcoded absolute path from next.config.ts turbopack configuration and disabled Turbopack in package.json scripts. Turbopack doesn't work well in Docker containers with mounted volumes.
 
 ## Notes
 
-- The `docker-compose.override.yml` file configures the web service for development with hot-reload on port 3000
-- The API is configured to accept CORS requests from `http://localhost:3000`
-- PostgreSQL runs on port 5433 (instead of default 5432) to avoid conflicts with local installations
+- The `docker-compose.override.yml` file configures the web service for development with hot-reload on port 3002
+- The API is configured to accept CORS requests from `http://localhost:3002`
+- PostgreSQL runs on port 5003 (instead of default 5432) to avoid conflicts with local installations
 - The web container mounts local files for hot-reload in development mode

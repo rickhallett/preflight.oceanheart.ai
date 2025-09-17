@@ -73,7 +73,7 @@ Without these foundations, feature development cannot proceed efficiently or mai
 - Basic error handling
 
 **Acceptance Criteria:**
-- FastAPI app runs on localhost:8000
+- FastAPI app runs on localhost:8002
 - `/health` endpoint returns 200 OK
 - Database connectivity verified
 - CORS configured for SvelteKit frontend
@@ -265,7 +265,7 @@ src/routes/
 **API Client Setup:**
 ```typescript
 // src/lib/api/client.ts
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000';
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8002';
 
 export class ApiClient {
   async get(endpoint: string) {
@@ -318,7 +318,7 @@ services:
     ports:
       - "5173:5173"
     environment:
-      VITE_API_BASE: http://localhost:8000
+      VITE_API_BASE: http://localhost:8002
 ```
 
 ### Phase 1f: CI/CD Pipeline
@@ -431,7 +431,7 @@ CORS_ORIGINS=http://localhost:5173
 DEBUG=true
 
 # Frontend (.env)  
-VITE_API_BASE=http://localhost:8000
+VITE_API_BASE=http://localhost:8002
 ```
 
 ### Package Management
@@ -457,9 +457,9 @@ Phase 1 is complete when:
 
 - [ ] Local development environment starts with single command
 - [ ] Frontend loads on localhost:5173 with basic navigation
-- [ ] Backend responds to health checks on localhost:8000
++ [ ] Backend responds to health checks on localhost:8002
 - [ ] Database migrations create all required tables
-- [ ] API documentation is accessible at localhost:8000/docs
++ [ ] API documentation is accessible at localhost:8002/docs
 - [ ] CI/CD pipeline passes on GitHub
 - [ ] README.md updated with setup instructions
 - [ ] All placeholder pages render without errors
