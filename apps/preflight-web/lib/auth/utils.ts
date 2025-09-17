@@ -22,7 +22,7 @@ export function getAuthConfig(): AuthConfig {
   const isDev = process.env.NODE_ENV === "development";
   
   return {
-    authUrl: isDev ? "http://oceanheart.lvh.me:3000" : "https://www.oceanheart.ai",
+    authUrl: isDev ? "http://passport.lvh.me:8004" : "https://www.oceanheart.ai",
     domain: isDev ? ".lvh.me" : ".oceanheart.ai",
     protocol: isDev ? "http" : "https",
     jwtSecret: process.env.JWT_SECRET || "",
@@ -36,7 +36,7 @@ export function getAuthConfig(): AuthConfig {
 export function getAuthUrl(returnPath: string): string {
   const isDev = process.env.NODE_ENV === "development";
   const baseUrl = isDev 
-    ? "http://localhost:3000" 
+    ? "http://localhost:3002" 
     : "https://watson.oceanheart.ai";
   const returnTo = `${baseUrl}${returnPath}`;
   
