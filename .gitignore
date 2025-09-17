@@ -120,3 +120,7 @@ logs/
 *.exe
 *.o
 *.so
+
+# Repomix
+repomix-output.xml
+**/repomix-output.xml
