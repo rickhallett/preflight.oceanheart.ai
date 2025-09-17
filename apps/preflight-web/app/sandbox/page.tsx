@@ -33,7 +33,7 @@ export default function SandboxPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="flex flex-col h-screen bg-zinc-950">
       <StepNavigator
         currentStep={currentStep}
         totalSteps={sampleSurveyConfig.steps.length}
@@ -43,11 +43,11 @@ export default function SandboxPage() {
       />
 
       <div className="flex flex-1 overflow-hidden">
-        <div className="w-1/2 border-r border-gray-200 dark:border-gray-700 overflow-y-auto bg-white dark:bg-gray-900">
+        <div className="w-1/2 border-r border-zinc-800 overflow-y-auto bg-zinc-900">
           <JsonViewer config={sampleSurveyConfig} currentStep={currentStep} />
         </div>
 
-        <div className="w-1/2 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+        <div className="w-1/2 overflow-y-auto bg-zinc-950">
           <FormRenderer
             step={sampleSurveyConfig.steps[currentStep]}
             onFormDataChange={handleFormDataChange}

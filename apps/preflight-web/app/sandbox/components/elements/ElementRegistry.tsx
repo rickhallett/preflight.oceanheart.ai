@@ -75,7 +75,7 @@ export const ElementRegistry: React.FC<ElementRegistryProps> = ({
             disabled={element.disabled}
             defaultValue={resolveDefaultValue(element.value)}
             onChange={(e) => onChange?.(e.target.value)}
-            className="w-full rounded-md border border-neutral-200 dark:border-neutral-700 bg-gray-50 dark:bg-zinc-800 px-3 py-2 text-sm"
+            className="w-full rounded-md border border-zinc-700 bg-zinc-800 px-2.5 py-1.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150"
             rows={4}
             {...elementProps}
           />
@@ -89,7 +89,7 @@ export const ElementRegistry: React.FC<ElementRegistryProps> = ({
             disabled={element.disabled}
             defaultValue={resolveDefaultValue(element.value)}
             onChange={(e) => onChange?.(e.target.value)}
-            className="w-full rounded-md border border-neutral-200 dark:border-neutral-700 bg-gray-50 dark:bg-zinc-800 px-3 py-2 text-sm"
+            className="w-full rounded-md border border-zinc-700 bg-zinc-800 px-2.5 py-1.5 text-sm text-zinc-100 focus:outline-none focus:border-zinc-600 transition-all duration-150"
             {...elementProps}
           >
             <option value="">Select...</option>
@@ -119,7 +119,7 @@ export const ElementRegistry: React.FC<ElementRegistryProps> = ({
                 />
                 <label
                   htmlFor={`${element.id}-${option.value}`}
-                  className="text-sm"
+                  className="text-sm text-zinc-300"
                 >
                   {option.label}
                 </label>
@@ -142,7 +142,7 @@ export const ElementRegistry: React.FC<ElementRegistryProps> = ({
               {...elementProps}
             />
             {element.label && (
-              <label htmlFor={element.id} className="text-sm">
+              <label htmlFor={element.id} className="text-sm text-zinc-300">
                 {element.label}
               </label>
             )}
@@ -163,7 +163,7 @@ export const ElementRegistry: React.FC<ElementRegistryProps> = ({
             id={element.id}
             disabled={element.disabled}
             onClick={buttonOnClick}
-            className="px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 disabled:opacity-50"
+            className="px-3 py-1.5 rounded-md bg-zinc-700 text-zinc-100 hover:bg-zinc-600 disabled:opacity-50 transition-all duration-150 text-sm"
             {...elementProps}
           >
             {element.label || "Button"}
@@ -182,7 +182,7 @@ export const ElementRegistry: React.FC<ElementRegistryProps> = ({
         element.type !== "label" && (
           <Label htmlFor={element.id} className="mb-2 block">
             {element.label}
-            {element.required && <span className="text-red-500 ml-1">*</span>}
+            {element.required && <span className="text-red-400 ml-1">*</span>}
           </Label>
         )}
       {renderElement()}

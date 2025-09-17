@@ -24,8 +24,8 @@ export const FormRenderer: React.FC<FormRendererProps> = ({
   };
 
   return (
-    <div className="w-full h-full p-6">
-      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
+    <div className="w-full h-full p-4">
+      <h2 className="text-xl font-bold mb-4 text-zinc-100">
         {step.title}
       </h2>
 
@@ -34,7 +34,7 @@ export const FormRenderer: React.FC<FormRendererProps> = ({
           <LayoutEngine
             key={container.id}
             layout={container.layout}
-            className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 mb-4"
+            className="border border-zinc-800 rounded-md p-3 mb-3 bg-zinc-900/50"
           >
             {container.elements.map((element: FormElement) => (
               <ElementRegistry
