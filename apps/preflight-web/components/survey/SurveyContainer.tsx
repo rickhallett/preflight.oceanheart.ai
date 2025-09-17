@@ -90,16 +90,16 @@ export function SurveyContainer() {
   return (
     <div className="max-w-4xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">Survey</h1>
-          <p className="text-gray-400">{currentForm.title}</p>
+          <h1 className="text-2xl font-bold text-zinc-100 mb-1">Survey</h1>
+          <p className="text-sm text-zinc-400">{currentForm.title}</p>
         </div>
         <button
           onClick={handleClose}
-          className="text-gray-400 hover:text-white transition-colors p-2"
+          className="text-zinc-400 hover:text-zinc-100 transition-colors p-1.5"
         >
-          <X className="w-6 h-6" />
+          <X className="w-5 h-5" />
         </button>
       </div>
 
@@ -107,7 +107,7 @@ export function SurveyContainer() {
       <ProgressBar />
 
       {/* Form Content */}
-      <div className="bg-gray-900/50 backdrop-blur-sm rounded-lg border border-gray-800 p-8 mb-8">
+      <div className="bg-zinc-900/50 backdrop-blur-sm rounded-md border border-zinc-800 p-6 mb-6">
         <CurrentFormComponent />
       </div>
 
@@ -116,10 +116,10 @@ export function SurveyContainer() {
         <button
           onClick={prevStep}
           disabled={isFirstStep}
-          className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-colors ${
+          className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-all duration-150 text-sm ${
             isFirstStep
-              ? "bg-gray-800 text-gray-500 cursor-not-allowed"
-              : "bg-gray-700 text-white hover:bg-gray-600"
+              ? "bg-zinc-800/50 text-zinc-600 cursor-not-allowed"
+              : "bg-zinc-700 text-zinc-100 hover:bg-zinc-600"
           }`}
         >
           <ChevronLeft className="w-4 h-4" />
@@ -132,12 +132,12 @@ export function SurveyContainer() {
             {forms.map((_, index) => (
               <div
                 key={index}
-                className={`w-3 h-3 rounded-full transition-colors ${
+                className={`w-2.5 h-2.5 rounded-full transition-colors duration-200 ${
                   index < currentStep
-                    ? "bg-green-500"
+                    ? "bg-zinc-500"
                     : index === currentStep
-                    ? "bg-indigo-500"
-                    : "bg-gray-700"
+                    ? "bg-zinc-300"
+                    : "bg-zinc-700"
                 }`}
               />
             ))}
@@ -148,10 +148,10 @@ export function SurveyContainer() {
           <button
             onClick={handleSubmit}
             disabled={!canSubmit}
-            className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-colors ${
+            className={`flex items-center space-x-2 px-4 py-2 rounded-md font-medium transition-all duration-150 text-sm ${
               canSubmit
-                ? "bg-green-600 text-white hover:bg-green-700"
-                : "bg-gray-800 text-gray-500 cursor-not-allowed"
+                ? "bg-zinc-600 text-zinc-100 hover:bg-zinc-500"
+                : "bg-zinc-800/50 text-zinc-600 cursor-not-allowed"
             }`}
           >
             <Send className="w-4 h-4" />
@@ -161,10 +161,10 @@ export function SurveyContainer() {
           <button
             onClick={handleNext}
             disabled={!canProceed}
-            className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-colors ${
+            className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-all duration-150 text-sm ${
               canProceed
-                ? "bg-indigo-600 text-white hover:bg-indigo-700"
-                : "bg-gray-800 text-gray-500 cursor-not-allowed"
+                ? "bg-zinc-700 text-zinc-100 hover:bg-zinc-600"
+                : "bg-zinc-800/50 text-zinc-600 cursor-not-allowed"
             }`}
           >
             <span>Next</span>
@@ -175,8 +175,8 @@ export function SurveyContainer() {
 
       {/* Validation message */}
       {!canProceed && (
-        <div className="mt-4 p-3 bg-yellow-900/20 border border-yellow-900/50 rounded-lg">
-          <p className="text-yellow-400 text-sm">
+        <div className="mt-3 p-2.5 bg-zinc-800/30 border border-zinc-700 rounded-md">
+          <p className="text-zinc-400 text-xs">
             Please fill in all required fields marked with <span className="text-red-400">*</span> before proceeding.
           </p>
         </div>

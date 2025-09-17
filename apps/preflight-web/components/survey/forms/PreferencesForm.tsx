@@ -60,26 +60,26 @@ export function PreferencesForm() {
   const availability = ["Mornings", "Afternoons", "Evenings", "Weekends"];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div>
-        <h2 className="text-2xl font-bold text-white mb-2">Preferences & Background</h2>
-        <p className="text-gray-400">Help us understand your professional background and interests.</p>
+        <h2 className="text-xl font-bold text-zinc-100 mb-1.5">Preferences & Background</h2>
+        <p className="text-zinc-400">Help us understand your professional background and interests.</p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-3">
+          <label className="block text-xs font-medium text-zinc-400 mb-2">
             Primary Role <span className="text-red-400">*</span>
           </label>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
             {roles.map((role) => (
               <button
                 key={role}
                 onClick={() => handleChange("role", role)}
-                className={`p-3 rounded-lg border text-sm transition-colors ${
+                className={`p-2.5 rounded-md border text-sm transition-colors ${
                   data.role === role
-                    ? "bg-indigo-600 border-indigo-500 text-white"
-                    : "bg-gray-800 border-gray-700 text-gray-300 hover:border-gray-600"
+                    ? "bg-zinc-600 border-zinc-600 text-zinc-100"
+                    : "bg-zinc-800 border-zinc-700 text-zinc-400 hover:border-zinc-600"
                 }`}
               >
                 {role}
@@ -89,13 +89,13 @@ export function PreferencesForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-xs font-medium text-zinc-400 mb-1.5">
             Years of Experience <span className="text-red-400">*</span>
           </label>
           <select
             value={data.experience}
             onChange={(e) => handleChange("experience", e.target.value)}
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-indigo-500"
+            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-zinc-100 focus:outline-none focus:border-zinc-600"
             required
           >
             <option value="">Select experience level</option>
@@ -108,7 +108,7 @@ export function PreferencesForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-xs font-medium text-zinc-400 mb-1.5">
             Team Size
           </label>
           <div className="flex space-x-4">
@@ -120,27 +120,27 @@ export function PreferencesForm() {
                   value={size}
                   checked={data.teamSize === size}
                   onChange={(e) => handleChange("teamSize", e.target.value)}
-                  className="w-4 h-4 text-indigo-600"
+                  className="w-4 h-4 text-zinc-600"
                 />
-                <span className="text-gray-300 text-sm">{size}</span>
+                <span className="text-zinc-400 text-sm">{size}</span>
               </label>
             ))}
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-3">
+          <label className="block text-xs font-medium text-zinc-400 mb-2">
             Areas of Interest (Select multiple)
           </label>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
             {interests.map((interest) => (
               <button
                 key={interest}
                 onClick={() => handleMultiSelect("interests", interest)}
-                className={`p-2 rounded-lg border text-xs transition-colors ${
+                className={`p-2 rounded-md border text-xs transition-colors ${
                   data.interests.includes(interest)
-                    ? "bg-indigo-600 border-indigo-500 text-white"
-                    : "bg-gray-800 border-gray-700 text-gray-300 hover:border-gray-600"
+                    ? "bg-zinc-600 border-zinc-600 text-zinc-100"
+                    : "bg-zinc-800 border-zinc-700 text-zinc-400 hover:border-zinc-600"
                 }`}
               >
                 {interest}
@@ -150,23 +150,23 @@ export function PreferencesForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-xs font-medium text-zinc-400 mb-1.5">
             Preferred Work Style
           </label>
           <textarea
             value={data.workStyle}
             onChange={(e) => handleChange("workStyle", e.target.value)}
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-colors"
             placeholder="Describe your preferred work environment and style..."
             rows={3}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-3">
+          <label className="block text-xs font-medium text-zinc-400 mb-2">
             Availability (Select all that apply)
           </label>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2.5">
             {availability.map((time) => (
               <label key={time} className="flex items-center space-x-2 cursor-pointer">
                 <input
@@ -174,9 +174,9 @@ export function PreferencesForm() {
                   value={time}
                   checked={data.availability.includes(time)}
                   onChange={() => handleMultiSelect("availability", time)}
-                  className="w-4 h-4 text-indigo-600 rounded"
+                  className="w-4 h-4 text-zinc-600 rounded"
                 />
-                <span className="text-gray-300 text-sm">{time}</span>
+                <span className="text-zinc-400 text-sm">{time}</span>
               </label>
             ))}
           </div>

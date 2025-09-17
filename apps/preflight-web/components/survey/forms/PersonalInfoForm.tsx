@@ -26,90 +26,90 @@ export function PersonalInfoForm() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div>
-        <h2 className="text-2xl font-bold text-white mb-2">Personal Information</h2>
-        <p className="text-gray-400">Tell us about yourself to get started.</p>
+        <h2 className="text-xl font-bold text-zinc-100 mb-1">Personal Information</h2>
+        <p className="text-sm text-zinc-400">Tell us about yourself to get started.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-xs font-medium text-zinc-400 mb-1.5">
             First Name <span className="text-red-400">*</span>
           </label>
           <input
             type="text"
             value={data.firstName}
             onChange={(e) => handleChange("firstName", e.target.value)}
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150"
             placeholder="Enter your first name"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-xs font-medium text-zinc-400 mb-1.5">
             Last Name <span className="text-red-400">*</span>
           </label>
           <input
             type="text"
             value={data.lastName}
             onChange={(e) => handleChange("lastName", e.target.value)}
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150"
             placeholder="Enter your last name"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-xs font-medium text-zinc-400 mb-1.5">
             Email Address <span className="text-red-400">*</span>
           </label>
           <input
             type="email"
             value={data.email}
             onChange={(e) => handleChange("email", e.target.value)}
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150"
             placeholder="your.email@company.com"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-xs font-medium text-zinc-400 mb-1.5">
             Phone Number
           </label>
           <input
             type="tel"
             value={data.phone}
             onChange={(e) => handleChange("phone", e.target.value)}
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150"
             placeholder="+1 (555) 123-4567"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-xs font-medium text-zinc-400 mb-1.5">
             Company
           </label>
           <input
             type="text"
             value={data.company}
             onChange={(e) => handleChange("company", e.target.value)}
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150"
             placeholder="Your company name"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-xs font-medium text-zinc-400 mb-1.5">
             Job Title
           </label>
           <input
             type="text"
             value={data.jobTitle}
             onChange={(e) => handleChange("jobTitle", e.target.value)}
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150"
             placeholder="Your current role"
           />
         </div>

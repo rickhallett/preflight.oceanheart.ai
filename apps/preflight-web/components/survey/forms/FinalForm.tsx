@@ -50,19 +50,19 @@ export function FinalForm() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div>
-        <h2 className="text-2xl font-bold text-white mb-2">Final Details</h2>
-        <p className="text-gray-400">Just a few more details to complete your submission.</p>
+        <h2 className="text-xl font-bold text-zinc-100 mb-1.5">Final Details</h2>
+        <p className="text-zinc-400">Just a few more details to complete your submission.</p>
       </div>
 
-      <div className="space-y-6">
-        <div className="bg-green-900/20 border border-green-900/50 rounded-lg p-4">
+      <div className="space-y-4">
+        <div className="bg-green-900/20 border border-green-900/50 rounded-md p-3">
           <div className="flex items-start space-x-3">
             <Check className="w-5 h-5 text-green-400 mt-1 flex-shrink-0" />
             <div>
-              <h3 className="text-green-400 font-semibold mb-2">Almost Complete!</h3>
-              <p className="text-gray-300 text-sm">
+              <h3 className="text-green-400 font-semibold mb-1.5">Almost Complete!</h3>
+              <p className="text-zinc-400 text-sm">
                 Thank you for taking the time to provide detailed information. 
                 Your responses will help us improve our services and better understand our users.
               </p>
@@ -71,18 +71,18 @@ export function FinalForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-3">
+          <label className="block text-xs font-medium text-zinc-400 mb-2">
             What type of survey is this for you?
           </label>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
             {surveyTypes.map((type) => (
               <button
                 key={type}
                 onClick={() => handleChange("surveyType", type)}
-                className={`p-3 rounded-lg border text-sm transition-colors ${
+                className={`p-2.5 rounded-md border text-sm transition-colors ${
                   data.surveyType === type
-                    ? "bg-indigo-600 border-indigo-500 text-white"
-                    : "bg-gray-800 border-gray-700 text-gray-300 hover:border-gray-600"
+                    ? "bg-zinc-600 border-zinc-600 text-zinc-100"
+                    : "bg-zinc-800 border-zinc-700 text-zinc-400 hover:border-zinc-600"
                 }`}
               >
                 {type}
@@ -92,13 +92,13 @@ export function FinalForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-xs font-medium text-zinc-400 mb-1.5">
             How did you hear about us?
           </label>
           <select
             value={data.referralSource}
             onChange={(e) => handleChange("referralSource", e.target.value)}
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-indigo-500"
+            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-zinc-100 focus:outline-none focus:border-zinc-600"
           >
             <option value="">Please select...</option>
             {referralSources.map((source) => (
@@ -107,8 +107,8 @@ export function FinalForm() {
           </select>
         </div>
 
-        <div className="bg-gray-800/50 rounded-lg p-6 space-y-4">
-          <h3 className="text-lg font-semibold text-white flex items-center space-x-2">
+        <div className="bg-zinc-800/50 rounded-md p-4 space-y-4">
+          <h3 className="text-lg font-semibold text-zinc-100 flex items-center space-x-2">
             <Mail className="w-5 h-5" />
             <span>Communication Preferences</span>
           </h3>
@@ -119,13 +119,13 @@ export function FinalForm() {
                 type="checkbox"
                 checked={data.newsletter}
                 onChange={(e) => handleChange("newsletter", e.target.checked)}
-                className="w-4 h-4 text-indigo-600 bg-gray-800 border-gray-600 rounded mt-1"
+                className="w-4 h-4 text-zinc-600 bg-zinc-800 border-gray-600 rounded mt-1"
               />
               <div>
-                <span className="text-gray-300 text-sm font-medium">
+                <span className="text-zinc-400 text-xs font-medium">
                   Subscribe to newsletter <span className="text-red-400">*</span>
                 </span>
-                <p className="text-gray-500 text-xs mt-1">
+                <p className="text-zinc-500 text-xs mt-1">
                   Stay updated with our latest features and improvements
                 </p>
               </div>
@@ -136,11 +136,11 @@ export function FinalForm() {
                 type="checkbox"
                 checked={data.updates}
                 onChange={(e) => handleChange("updates", e.target.checked)}
-                className="w-4 h-4 text-indigo-600 bg-gray-800 border-gray-600 rounded mt-1"
+                className="w-4 h-4 text-zinc-600 bg-zinc-800 border-gray-600 rounded mt-1"
               />
               <div>
-                <span className="text-gray-300 text-sm">Product updates</span>
-                <p className="text-gray-500 text-xs mt-1">
+                <span className="text-zinc-400 text-sm">Product updates</span>
+                <p className="text-zinc-500 text-xs mt-1">
                   Notifications about new features and releases
                 </p>
               </div>
@@ -151,11 +151,11 @@ export function FinalForm() {
                 type="checkbox"
                 checked={data.marketing}
                 onChange={(e) => handleChange("marketing", e.target.checked)}
-                className="w-4 h-4 text-indigo-600 bg-gray-800 border-gray-600 rounded mt-1"
+                className="w-4 h-4 text-zinc-600 bg-zinc-800 border-gray-600 rounded mt-1"
               />
               <div>
-                <span className="text-gray-300 text-sm">Marketing communications</span>
-                <p className="text-gray-500 text-xs mt-1">
+                <span className="text-zinc-400 text-sm">Marketing communications</span>
+                <p className="text-zinc-500 text-xs mt-1">
                   Special offers, events, and promotional content
                 </p>
               </div>
@@ -166,11 +166,11 @@ export function FinalForm() {
                 type="checkbox"
                 checked={data.futureParticipation}
                 onChange={(e) => handleChange("futureParticipation", e.target.checked)}
-                className="w-4 h-4 text-indigo-600 bg-gray-800 border-gray-600 rounded mt-1"
+                className="w-4 h-4 text-zinc-600 bg-zinc-800 border-gray-600 rounded mt-1"
               />
               <div>
-                <span className="text-gray-300 text-sm">Future survey participation</span>
-                <p className="text-gray-500 text-xs mt-1">
+                <span className="text-zinc-400 text-sm">Future survey participation</span>
+                <p className="text-zinc-500 text-xs mt-1">
                   Invite me to participate in future research studies
                 </p>
               </div>
@@ -178,14 +178,14 @@ export function FinalForm() {
           </div>
         </div>
 
-        <div className="bg-gray-800/50 rounded-lg p-6 space-y-4">
-          <h3 className="text-lg font-semibold text-white flex items-center space-x-2">
+        <div className="bg-zinc-800/50 rounded-md p-4 space-y-4">
+          <h3 className="text-lg font-semibold text-zinc-100 flex items-center space-x-2">
             <Shield className="w-5 h-5" />
             <span>Privacy & Data</span>
           </h3>
           
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-xs font-medium text-zinc-400 mb-1.5">
               Data Retention Preference
             </label>
             <div className="flex space-x-4">
@@ -202,30 +202,30 @@ export function FinalForm() {
                     value={option.value}
                     checked={data.dataRetention === option.value}
                     onChange={(e) => handleChange("dataRetention", e.target.value)}
-                    className="w-4 h-4 text-indigo-600"
+                    className="w-4 h-4 text-zinc-600"
                   />
-                  <span className="text-gray-300 text-sm">{option.label}</span>
+                  <span className="text-zinc-400 text-sm">{option.label}</span>
                 </label>
               ))}
             </div>
-            <p className="text-gray-500 text-xs mt-2">
+            <p className="text-zinc-500 text-xs mt-2">
               How long should we keep your survey responses?
             </p>
           </div>
 
-          <div className="space-y-3 pt-4 border-t border-gray-700">
+          <div className="space-y-3 pt-4 border-t border-zinc-700">
             <label className="flex items-start space-x-3 cursor-pointer">
               <input
                 type="checkbox"
                 checked={data.privacy}
                 onChange={(e) => handleChange("privacy", e.target.checked)}
-                className="w-4 h-4 text-indigo-600 bg-gray-800 border-gray-600 rounded mt-1"
+                className="w-4 h-4 text-zinc-600 bg-zinc-800 border-gray-600 rounded mt-1"
               />
               <div>
-                <span className="text-gray-300 text-sm">
+                <span className="text-zinc-400 text-sm">
                   I agree to the Privacy Policy
                 </span>
-                <p className="text-gray-500 text-xs mt-1">
+                <p className="text-zinc-500 text-xs mt-1">
                   Read our <a href="#" className="text-indigo-400 hover:text-indigo-300">Privacy Policy</a>
                 </p>
               </div>
@@ -236,13 +236,13 @@ export function FinalForm() {
                 type="checkbox"
                 checked={data.terms}
                 onChange={(e) => handleChange("terms", e.target.checked)}
-                className="w-4 h-4 text-indigo-600 bg-gray-800 border-gray-600 rounded mt-1"
+                className="w-4 h-4 text-zinc-600 bg-zinc-800 border-gray-600 rounded mt-1"
               />
               <div>
-                <span className="text-gray-300 text-sm">
+                <span className="text-zinc-400 text-sm">
                   I accept the Terms of Service
                 </span>
-                <p className="text-gray-500 text-xs mt-1">
+                <p className="text-zinc-500 text-xs mt-1">
                   Read our <a href="#" className="text-indigo-400 hover:text-indigo-300">Terms of Service</a>
                 </p>
               </div>

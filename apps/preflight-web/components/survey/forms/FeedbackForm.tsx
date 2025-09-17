@@ -55,7 +55,7 @@ export function FeedbackForm() {
             key={star}
             onClick={() => handleChange("rating", star)}
             className={`p-1 transition-colors ${
-              star <= data.rating ? "text-yellow-400" : "text-gray-600 hover:text-yellow-300"
+              star <= data.rating ? "text-yellow-400" : "text-zinc-600 hover:text-yellow-300"
             }`}
           >
             <Star className="w-8 h-8 fill-current" />
@@ -66,27 +66,27 @@ export function FeedbackForm() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div>
-        <h2 className="text-2xl font-bold text-white mb-2">Feedback & Experience</h2>
-        <p className="text-gray-400">Help us improve by sharing your thoughts and suggestions.</p>
+        <h2 className="text-xl font-bold text-zinc-100 mb-1.5">Feedback & Experience</h2>
+        <p className="text-zinc-400">Help us improve by sharing your thoughts and suggestions.</p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-3">
+          <label className="block text-xs font-medium text-zinc-400 mb-2">
             Overall Rating <span className="text-red-400">*</span>
           </label>
           <div className="flex items-center space-x-4">
             {renderStarRating()}
-            <span className="text-gray-400 text-sm ml-4">
+            <span className="text-zinc-400 text-sm ml-4">
               {data.rating > 0 && `${data.rating}/5 stars`}
             </span>
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-3">
+          <label className="block text-xs font-medium text-zinc-400 mb-2">
             How satisfied are you with our service?
           </label>
           <div className="flex space-x-4">
@@ -100,13 +100,13 @@ export function FeedbackForm() {
               <button
                 key={option.value}
                 onClick={() => handleChange("satisfaction", option.value)}
-                className={`flex flex-col items-center p-3 rounded-lg border transition-colors ${
+                className={`flex flex-col items-center p-2.5 rounded-md border transition-colors ${
                   data.satisfaction === option.value
-                    ? "bg-indigo-600 border-indigo-500 text-white"
-                    : "bg-gray-800 border-gray-700 text-gray-300 hover:border-gray-600"
+                    ? "bg-zinc-600 border-zinc-600 text-zinc-100"
+                    : "bg-zinc-800 border-zinc-700 text-zinc-400 hover:border-zinc-600"
                 }`}
               >
-                <span className="text-2xl mb-1">{option.icon}</span>
+                <span className="text-xl mb-1">{option.icon}</span>
                 <span className="text-xs text-center">{option.label}</span>
               </button>
             ))}
@@ -114,13 +114,13 @@ export function FeedbackForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-xs font-medium text-zinc-400 mb-1.5">
             What could we improve? <span className="text-red-400">*</span>
           </label>
           <textarea
             value={data.improvement}
             onChange={(e) => handleChange("improvement", e.target.value)}
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-colors"
             placeholder="Tell us what features or improvements would make this better for you..."
             rows={4}
             required
@@ -128,18 +128,18 @@ export function FeedbackForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-3">
+          <label className="block text-xs font-medium text-zinc-400 mb-2">
             What features would you like to see? (Select multiple)
           </label>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
             {features.map((feature) => (
               <button
                 key={feature}
                 onClick={() => handleMultiSelect("features", feature)}
-                className={`p-3 rounded-lg border text-sm transition-colors ${
+                className={`p-2.5 rounded-md border text-sm transition-colors ${
                   data.features.includes(feature)
-                    ? "bg-indigo-600 border-indigo-500 text-white"
-                    : "bg-gray-800 border-gray-700 text-gray-300 hover:border-gray-600"
+                    ? "bg-zinc-600 border-zinc-600 text-zinc-100"
+                    : "bg-zinc-800 border-zinc-700 text-zinc-400 hover:border-zinc-600"
                 }`}
               >
                 {feature}
@@ -149,16 +149,16 @@ export function FeedbackForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-3">
+          <label className="block text-xs font-medium text-zinc-400 mb-2">
             Would you recommend us to others?
           </label>
           <div className="flex space-x-4">
             <button
               onClick={() => handleChange("recommend", "yes")}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-lg border transition-colors ${
+              className={`flex items-center space-x-2 px-6 py-3 rounded-md border transition-colors ${
                 data.recommend === "yes"
-                  ? "bg-green-600 border-green-500 text-white"
-                  : "bg-gray-800 border-gray-700 text-gray-300 hover:border-gray-600"
+                  ? "bg-zinc-600 border-green-500 text-zinc-100"
+                  : "bg-zinc-800 border-zinc-700 text-zinc-400 hover:border-zinc-600"
               }`}
             >
               <ThumbsUp className="w-5 h-5" />
@@ -166,20 +166,20 @@ export function FeedbackForm() {
             </button>
             <button
               onClick={() => handleChange("recommend", "maybe")}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-lg border transition-colors ${
+              className={`flex items-center space-x-2 px-6 py-3 rounded-md border transition-colors ${
                 data.recommend === "maybe"
-                  ? "bg-yellow-600 border-yellow-500 text-white"
-                  : "bg-gray-800 border-gray-700 text-gray-300 hover:border-gray-600"
+                  ? "bg-yellow-600 border-yellow-500 text-zinc-100"
+                  : "bg-zinc-800 border-zinc-700 text-zinc-400 hover:border-zinc-600"
               }`}
             >
               <span>Maybe</span>
             </button>
             <button
               onClick={() => handleChange("recommend", "no")}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-lg border transition-colors ${
+              className={`flex items-center space-x-2 px-6 py-3 rounded-md border transition-colors ${
                 data.recommend === "no"
-                  ? "bg-red-600 border-red-500 text-white"
-                  : "bg-gray-800 border-gray-700 text-gray-300 hover:border-gray-600"
+                  ? "bg-red-600 border-red-500 text-zinc-100"
+                  : "bg-zinc-800 border-zinc-700 text-zinc-400 hover:border-zinc-600"
               }`}
             >
               <ThumbsDown className="w-5 h-5" />
@@ -189,13 +189,13 @@ export function FeedbackForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-xs font-medium text-zinc-400 mb-1.5">
             Additional Comments
           </label>
           <textarea
             value={data.additionalComments}
             onChange={(e) => handleChange("additionalComments", e.target.value)}
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-colors"
             placeholder="Any other feedback or suggestions..."
             rows={3}
           />
@@ -207,13 +207,13 @@ export function FeedbackForm() {
               type="checkbox"
               checked={data.contactConsent}
               onChange={(e) => handleChange("contactConsent", e.target.checked)}
-              className="w-4 h-4 text-indigo-600 bg-gray-800 border-gray-600 rounded mt-1"
+              className="w-4 h-4 text-zinc-600 bg-zinc-800 border-gray-600 rounded mt-1"
             />
             <div>
-              <span className="text-gray-300 text-sm">
+              <span className="text-zinc-400 text-sm">
                 I consent to being contacted for follow-up feedback
               </span>
-              <p className="text-gray-500 text-xs mt-1">
+              <p className="text-zinc-500 text-xs mt-1">
                 We may reach out to discuss your feedback in more detail
               </p>
             </div>
