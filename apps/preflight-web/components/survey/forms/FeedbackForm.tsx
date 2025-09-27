@@ -4,11 +4,21 @@ import React, { useEffect, useState } from "react";
 import { useSurveyStore } from "@/lib/stores/survey-store";
 import { Star, ThumbsUp, ThumbsDown } from "lucide-react";
 
+interface FeedbackData {
+  rating: number;
+  satisfaction: string;
+  improvement: string;
+  features: string[];
+  recommend: string;
+  additionalComments: string;
+  contactConsent: boolean;
+}
+
 export function FeedbackForm() {
   const { getFormData, updateFormData } = useSurveyStore();
   const formId = "feedback";
   
-  const [data, setData] = useState(() => ({
+  const [data, setData] = useState<FeedbackData>(() => ({
     rating: 0,
     satisfaction: "",
     improvement: "",
@@ -23,16 +33,18 @@ export function FeedbackForm() {
     updateFormData(formId, data);
   }, [data, updateFormData]);
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: keyof FeedbackData, value: any) => {
     setData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleMultiSelect = (field: string, value: string) => {
+  const handleMultiSelect = (field: keyof FeedbackData, value: string) => {
     setData(prev => ({
       ...prev,
-      [field]: prev[field].includes(value)
-        ? prev[field].filter((item: string) => item !== value)
-        : [...prev[field], value]
+      [field]: field === 'features' && Array.isArray(prev[field])
+        ? prev[field].includes(value)
+          ? prev[field].filter((item: string) => item !== value)
+          : [...prev[field], value]
+        : prev[field]
     }));
   };
 

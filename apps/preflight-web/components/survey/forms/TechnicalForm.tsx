@@ -3,11 +3,22 @@
 import React, { useEffect, useState } from "react";
 import { useSurveyStore } from "@/lib/stores/survey-store";
 
+interface TechnicalData {
+  languages: string[];
+  frameworks: string[];
+  databases: string[];
+  tools: string[];
+  cloudPlatforms: string[];
+  skillLevel: Record<string, string>;
+  certifications: string;
+  githubProfile: string;
+}
+
 export function TechnicalForm() {
   const { getFormData, updateFormData } = useSurveyStore();
   const formId = "technical";
   
-  const [data, setData] = useState(() => ({
+  const [data, setData] = useState<TechnicalData>(() => ({
     languages: [],
     frameworks: [],
     databases: [],
@@ -23,13 +34,19 @@ export function TechnicalForm() {
     updateFormData(formId, data);
   }, [data, updateFormData]);
 
-  const handleMultiSelect = (field: string, value: string) => {
-    setData(prev => ({
-      ...prev,
-      [field]: prev[field].includes(value)
-        ? prev[field].filter((item: string) => item !== value)
-        : [...prev[field], value]
-    }));
+  const handleMultiSelect = (field: keyof Omit<TechnicalData, 'skillLevel' | 'certifications' | 'githubProfile'>, value: string) => {
+    setData(prev => {
+      const fieldData = prev[field];
+      if (Array.isArray(fieldData)) {
+        return {
+          ...prev,
+          [field]: fieldData.includes(value)
+            ? fieldData.filter((item: string) => item !== value)
+            : [...fieldData, value]
+        };
+      }
+      return prev;
+    });
   };
 
   const handleSkillLevel = (skill: string, level: string) => {

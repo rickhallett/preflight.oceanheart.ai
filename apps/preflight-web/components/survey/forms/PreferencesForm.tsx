@@ -3,11 +3,20 @@
 import React, { useEffect, useState } from "react";
 import { useSurveyStore } from "@/lib/stores/survey-store";
 
+interface PreferencesData {
+  role: string;
+  experience: string;
+  teamSize: string;
+  interests: string[];
+  workStyle: string;
+  availability: string[];
+}
+
 export function PreferencesForm() {
   const { getFormData, updateFormData } = useSurveyStore();
   const formId = "preferences";
   
-  const [data, setData] = useState(() => ({
+  const [data, setData] = useState<PreferencesData>(() => ({
     role: "",
     experience: "",
     teamSize: "",
@@ -21,17 +30,20 @@ export function PreferencesForm() {
     updateFormData(formId, data);
   }, [data, updateFormData]);
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: keyof PreferencesData, value: any) => {
     setData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleMultiSelect = (field: string, value: string) => {
-    setData(prev => ({
-      ...prev,
-      [field]: prev[field].includes(value)
-        ? prev[field].filter((item: string) => item !== value)
-        : [...prev[field], value]
-    }));
+  const handleMultiSelect = (field: keyof PreferencesData, value: string) => {
+    const fieldData = data[field];
+    if (Array.isArray(fieldData)) {
+      setData(prev => ({
+        ...prev,
+        [field]: fieldData.includes(value)
+          ? fieldData.filter((item: string) => item !== value)
+          : [...fieldData, value]
+      }));
+    }
   };
 
   const roles = [

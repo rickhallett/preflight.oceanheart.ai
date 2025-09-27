@@ -4,11 +4,23 @@ import React, { useEffect, useState } from "react";
 import { useSurveyStore } from "@/lib/stores/survey-store";
 import { Check, Mail, Bell, Shield } from "lucide-react";
 
+interface FinalFormData {
+  newsletter: boolean;
+  updates: boolean;
+  privacy: boolean;
+  terms: boolean;
+  marketing: boolean;
+  surveyType: string;
+  referralSource: string;
+  futureParticipation: boolean;
+  dataRetention: string;
+}
+
 export function FinalForm() {
   const { getFormData, updateFormData } = useSurveyStore();
   const formId = "final";
   
-  const [data, setData] = useState(() => ({
+  const [data, setData] = useState<FinalFormData>(() => ({
     newsletter: false,
     updates: false,
     privacy: false,
@@ -25,7 +37,7 @@ export function FinalForm() {
     updateFormData(formId, data);
   }, [data, updateFormData]);
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: keyof FinalFormData, value: any) => {
     setData(prev => ({ ...prev, [field]: value }));
   };
 

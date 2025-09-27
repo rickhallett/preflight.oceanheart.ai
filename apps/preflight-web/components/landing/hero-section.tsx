@@ -23,9 +23,9 @@ export function HeroSection() {
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-zinc-950 bg-grid-white/[0.02]">
       <SkewedBackground />
-      
+
       {/* Spotlight effect - subtle monochrome version */}
-      <Spotlight 
+      <Spotlight
         gradientFirst="radial-gradient(68.54% 68.72% at 55.02% 31.46%, rgba(255, 255, 255, 0.04) 0, rgba(255, 255, 255, 0.02) 50%, transparent 80%)"
         gradientSecond="radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.03) 0, rgba(255, 255, 255, 0.01) 80%, transparent 100%)"
         gradientThird="radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.02) 0, rgba(255, 255, 255, 0.01) 80%, transparent 100%)"
@@ -42,7 +42,7 @@ export function HeroSection() {
         }}
       >
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-zinc-50 to-zinc-400 mb-4">
-          Preflight <span className="text-zinc-500">AI</span>
+          <span className="text-yellow-400">Preflight</span> <span className="text-zinc-500">AI</span>
         </h1>
         <p className="text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto mb-8">
           Your intelligent preflight assessment platform. Streamline your AI readiness

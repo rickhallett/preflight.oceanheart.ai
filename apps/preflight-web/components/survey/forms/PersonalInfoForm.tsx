@@ -3,11 +3,20 @@
 import React, { useEffect, useState } from "react";
 import { useSurveyStore } from "@/lib/stores/survey-store";
 
+interface PersonalInfoData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  company: string;
+  jobTitle: string;
+}
+
 export function PersonalInfoForm() {
   const { getFormData, updateFormData } = useSurveyStore();
   const formId = "personal-info";
   
-  const [data, setData] = useState(() => ({
+  const [data, setData] = useState<PersonalInfoData>(() => ({
     firstName: "",
     lastName: "",
     email: "",
@@ -21,7 +30,7 @@ export function PersonalInfoForm() {
     updateFormData(formId, data);
   }, [data, updateFormData]);
 
-  const handleChange = (field: string, value: string) => {
+  const handleChange = (field: keyof PersonalInfoData, value: string) => {
     setData(prev => ({ ...prev, [field]: value }));
   };
 
