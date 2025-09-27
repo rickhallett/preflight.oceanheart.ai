@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { isStubToken, verifyToken } from "@/lib/auth/passport";
 
 // List of protected routes that require authentication
 const protectedRoutes = ["/app", "/app/profile", "/app/settings"];
@@ -7,7 +8,23 @@ const protectedRoutes = ["/app", "/app/profile", "/app/settings"];
 // List of public routes that don't require authentication
 const publicRoutes = ["/", "/login"];
 
-export function middleware(request: NextRequest) {
+// Helper to check if token is a stub token
+function validateStubToken(token: string): boolean {
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 3) return false;
+    
+    // Decode payload to check expiration
+    const payload = JSON.parse(atob(parts[1]));
+    const exp = payload.exp * 1000; // Convert to milliseconds
+    
+    return Date.now() <= exp;
+  } catch {
+    return false;
+  }
+}
+
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
   // Check if the route is protected
@@ -29,25 +46,43 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
   
-  // Basic token validation (check if it exists and has proper structure)
   try {
     const tokenValue = token.value;
-    const parts = tokenValue.split(".");
     
+    // Basic structure validation
+    const parts = tokenValue.split(".");
     if (parts.length !== 3) {
       throw new Error("Invalid token structure");
     }
     
-    // Decode payload to check expiration
-    const payload = JSON.parse(atob(parts[1]));
-    const exp = payload.exp * 1000; // Convert to milliseconds
-    
-    if (Date.now() > exp) {
-      throw new Error("Token expired");
+    // Check if it's a stub token (for testing)
+    if (isStubToken(tokenValue)) {
+      // Validate stub token locally
+      if (validateStubToken(tokenValue)) {
+        return NextResponse.next();
+      } else {
+        throw new Error("Stub token expired");
+      }
     }
     
-    // Token appears valid, continue to the protected route
-    return NextResponse.next();
+    // For real JWT tokens, we'll validate them on the client side
+    // to avoid making API calls in middleware (which can be slow)
+    // Just check basic structure and expiration here
+    try {
+      const payload = JSON.parse(atob(parts[1]));
+      const exp = payload.exp * 1000; // Convert to milliseconds
+      
+      if (Date.now() > exp) {
+        throw new Error("Token expired");
+      }
+      
+      // Token appears structurally valid, actual verification 
+      // will happen client-side with API calls
+      return NextResponse.next();
+    } catch {
+      // If we can't decode the payload, it's likely invalid
+      throw new Error("Invalid token payload");
+    }
   } catch (error) {
     // Invalid or expired token, redirect to login
     const loginUrl = new URL("/login", request.url);
