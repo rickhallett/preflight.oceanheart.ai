@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { 
   FileText, 
   Zap, 
@@ -96,7 +96,9 @@ export function FeatureBento() {
                 
                 <div className="relative z-10 h-full flex flex-col">
                   <div className="flex items-start justify-between mb-3">
-                    <Icon className="w-5 h-5 text-zinc-400 group-hover:text-zinc-300 transition-colors" />
+                    {React.createElement(Icon, {
+                      className: "w-5 h-5 text-zinc-400 group-hover:text-zinc-300 transition-colors"
+                    })}
                     {isHovered && (
                       <ArrowRight className="w-4 h-4 text-zinc-500 animate-in slide-in-from-left-1 duration-200" />
                     )}

@@ -16,9 +16,11 @@ import {
   X
 } from "lucide-react";
 
+type NotificationKey = 'email' | 'push' | 'weekly' | 'product' | 'security';
+
 export default function SettingsPage() {
   const [activeSection, setActiveSection] = useState("account");
-  const [notifications, setNotifications] = useState({
+  const [notifications, setNotifications] = useState<Record<NotificationKey, boolean>>({
     email: true,
     push: false,
     weekly: true,
@@ -132,12 +134,12 @@ export default function SettingsPage() {
               <div className="bg-zinc-900/50 rounded-md p-4 border border-zinc-800 hover:bg-zinc-800/50 transition-all duration-200">
                 <h3 className="text-base font-semibold text-zinc-100 mb-3">Email Notifications</h3>
                 <div className="space-y-3">
-                  {Object.entries({
+                  {(Object.entries({
                     email: "All email notifications",
                     weekly: "Weekly digest",
                     product: "Product updates",
                     security: "Security alerts"
-                  }).map(([key, label], index) => (
+                  }) as [NotificationKey, string][]).map(([key, label]) => (
                     <div key={key} className="flex items-center justify-between py-1.5">
                       <span className="text-sm text-zinc-300">{label}</span>
                       <button
