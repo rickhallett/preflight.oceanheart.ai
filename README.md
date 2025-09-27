@@ -33,10 +33,10 @@ This README documents the full technical specification, installation instruction
 
 | Layer      | Technology                                                               | Rationale                                                                           |
 | ---------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
-| Front-end  | **SvelteKit** (TypeScript)                                               | SPA polish with minimal boilerplate, server-side rendering for SEO.                 |
+| Front-end  | **Next.js 15** (TypeScript)                                              | React 19 with App Router, Server Components, Turbopack for fast builds.             |
 | API        | **FastAPI** (Python)                                                     | Excellent LLM integration and async performance.                                    |
 | Database   | **Postgres (Neon)**                                                      | SQL analytics with JSONB flexibility for unstructured form definitions and answers. |
-| Auth       | **Rails 8**                                                                | Simple auth, courtesy of Oceanheart Passport, JWT integration with FastAPI.                     |
+| Auth       | **passport.oceanheart.ai**                                               | External OAuth provider with JWT integration, HttpOnly cookie storage.              |
 | Deployment | Vercel (SvelteKit), Fly.io/Railway (FastAPI), Neon (serverless Postgres) | Fast, low-ops, free/cheap tiers.                                                    |
 
 ---
@@ -45,15 +45,18 @@ This README documents the full technical specification, installation instruction
 
 ```
 apps/
-  preflight-web/        # SvelteKit frontend
-    src/routes/
-      intro/
-      survey/[formId]/[page]/
-      coach/
-      feedback/
-      results/
-    src/lib/form-runtime/   # JSON→UI renderer
-    src/lib/api/            # typed client for FastAPI
+  preflight-web/        # Next.js 15 frontend
+    app/                # App Router pages
+      (protected)/      # Protected routes
+      auth/callback/    # OAuth callback
+      survey/          # Survey pages  
+      coach/           # Coaching interface
+      feedback/        # Feedback collection
+    components/         # Reusable components
+      ui/              # Base UI components
+      landing/         # Landing page components
+      survey/          # Survey form components
+    lib/               # Utilities and configurations
   preflight-api/        # FastAPI backend
     app/routes/
       forms.py
@@ -138,11 +141,10 @@ infra/
 
 ### Prerequisites
 
-* Node 20+
+* Bun 1.0+ (preferred) or Node 20+
 * Python 3.11+
 * PostgreSQL (local or Neon)
-* pnpm (recommended) or npm/yarn
-* [Clerk](https://clerk.com/) account
+* passport.oceanheart.ai account (for authentication)
 * OpenAI/Anthropic API key (for LLM)
 
 ### Backend (FastAPI)
@@ -150,20 +152,20 @@ infra/
 ```bash
 cd apps/preflight-api
 python -m venv venv
-source venv/bin/activate
+source venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-# Set DATABASE_URL, LLM_API_KEY, CLERK_JWT_KEY in .env
+# Set DATABASE_URL, LLM_API_KEY in .env
 alembic upgrade head  # create tables
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --port 8002
 ```
 
-### Frontend (SvelteKit)
+### Frontend (Next.js)
 
 ```bash
 cd apps/preflight-web
-pnpm install
-# Set PUBLIC_API_BASE and Clerk keys in .env
-pnpm dev
+bun install  # or npm install
+# Set PUBLIC_API_BASE in .env
+bun run dev  # Runs on http://localhost:3002
 ```
 
 ### Database
@@ -196,8 +198,8 @@ DATABASE_URL=postgresql://user:password@host:5432/preflight
 | ----------------------- | --------------------------- |
 | `DATABASE_URL`          | Postgres connection string  |
 | `LLM_API_KEY`           | OpenAI/Anthropic API key    |
-| `CLERK_PUBLISHABLE_KEY` | Clerk frontend key          |
-| `CLERK_SECRET_KEY`      | Clerk backend key           |
+| `PASSPORT_OAUTH_URL`    | passport.oceanheart.ai URL  |
+| `JWT_SECRET`            | JWT verification secret     |
 | `PUBLIC_API_BASE`       | Base URL of FastAPI service |
 
 ---
@@ -211,11 +213,11 @@ cd apps/preflight-api
 pytest
 ```
 
-SvelteKit uses **vitest**:
+Next.js uses **Bun test**:
 
 ```bash
 cd apps/preflight-web
-pnpm test
+bun test
 ```
 
 ---
@@ -269,29 +271,28 @@ See [LICENSE](LICENSE) for details.
 It is **not** a clinical diagnostic tool and provides no medical advice.*
 
 
-## Setup
+## Quick Start with Docker
 
-### Python (UV)
 ```bash
-uv venv
-source .venv/bin/activate  # or .venv\Scripts\activate on Windows
+# Start all services
+docker-compose up --build
+
+# Frontend: http://localhost:3002
+# Backend API: http://localhost:8002
+# API Docs: http://localhost:8002/docs
 ```
 
-### TypeScript/JavaScript (Bun)
+## Development Setup
+
+### Using Bun (Recommended)
 ```bash
+cd apps/preflight-web
 bun install
-bun run dev
+bun run dev  # http://localhost:3002
 ```
 
-### Ruby
+### Linting & Formatting
 ```bash
-bundle install
+bun run lint    # Biome linting
+bun run format  # Biome formatting
 ```
-
-## Development
-
-[Add development instructions here]
-
-## Contributing
-
-[Add contributing guidelines here]

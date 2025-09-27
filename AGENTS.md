@@ -3,18 +3,24 @@
 This document provides concise, practical guidance for contributing to this repository. It applies to the entire repo unless a more specific AGENTS.md exists in a subfolder.
 
 ## Project Structure & Module Organization
-- `src/` — TypeScript/JS source. UI/logic modules live under `src/components/` and siblings.
-- `docs/` — Product specs, integration notes, and design documents.
-- `main.py` — Python entry point for CLI/dev utilities.
-- `package.json`, `bun.lock`, `tsconfig.json` — Bun/TypeScript tooling.
-- `.venv`, `pyproject.toml` — Python environment and packaging.
-- `node_modules/` — Managed by Bun; do not edit.
+- `apps/preflight-web/` — Next.js 15 frontend application
+  - `app/` — App Router pages and layouts
+  - `components/` — Reusable React components  
+  - `lib/` — Utilities and configurations
+- `apps/preflight-api/` — FastAPI backend application
+  - `app/` — API routes and services
+  - `alembic/` — Database migrations
+- `package.json`, `bun.lock`, `tsconfig.json` — Bun/TypeScript tooling
+- `node_modules/` — Managed by Bun; do not edit
 
 ## Build, Test, and Development Commands
-- JS/TS setup: `bun install` — install dependencies.
-- Run TS module: `bun --hot ./src/server.ts` — hot-reload dev server (adjust path to your entry file).
-- JS/TS tests: `bun test` — run tests with `bun:test`.
-- Python quick run: `python main.py` — executes the Python entry.
+- Frontend setup: `cd apps/preflight-web && bun install` — install dependencies
+- Frontend dev: `bun run dev` — Next.js dev server on port 3002
+- Frontend build: `bun run build` — production build
+- Linting: `bun run lint` — Biome linting
+- Formatting: `bun run format` — Biome formatting
+- Backend setup: `cd apps/preflight-api && pip install -r requirements.txt`
+- Backend dev: `uvicorn app.main:app --reload --port 8002`
 
 ## Coding Style & Naming Conventions
 - TypeScript: 2-space indent, `strict` types (per `tsconfig.json`).
