@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { Plus, Minus } from "lucide-react";
 
 interface FAQ {
@@ -47,9 +48,44 @@ const faqs: FAQ[] = [
   }
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.2,
+    },
+  },
+} as const;
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: "easeOut" as const,
+    },
+  },
+} as const;
+
+const headingVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut" as const,
+    },
+  },
+} as const;
+
 export function FAQSection() {
   const [openItems, setOpenItems] = useState<Set<string>>(new Set());
-  
+
   const toggleItem = (id: string) => {
     const newOpenItems = new Set(openItems);
     if (newOpenItems.has(id)) {
@@ -59,58 +95,90 @@ export function FAQSection() {
     }
     setOpenItems(newOpenItems);
   };
-  
+
   return (
     <section className="py-20 px-4" id="faq">
       <div className="max-w-3xl mx-auto">
-        <div className="mb-12">
+        <motion.div
+          className="mb-12"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={headingVariants}
+        >
           <h2 className="text-3xl md:text-4xl font-bold text-zinc-50 mb-4">
             Frequently Asked Questions
           </h2>
           <p className="text-zinc-400">
             Everything you need to know about Preflight AI.
           </p>
-        </div>
-        
-        <div className="space-y-3">
-          {faqs.map((faq, index) => {
+        </motion.div>
+
+        <motion.div
+          className="space-y-3"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={containerVariants}
+        >
+          {faqs.map((faq) => {
             const isOpen = openItems.has(faq.id);
-            
+
             return (
-              <div
+              <motion.div
                 key={faq.id}
-                className="border border-zinc-800 rounded-md overflow-hidden transition-all duration-200 hover:border-zinc-700"
-                style={{
-                  animationDelay: `${index * 50}ms`
-                }}
+                variants={itemVariants}
+                className="border border-zinc-800 rounded-md overflow-hidden transition-colors duration-200 hover:border-zinc-700"
               >
-                <button
+                <motion.button
                   onClick={() => toggleItem(faq.id)}
                   className="w-full px-5 py-4 flex items-center justify-between text-left bg-zinc-900/50 hover:bg-zinc-800/50 transition-colors"
+                  whileTap={{ scale: 0.995 }}
+                  type="button"
                 >
                   <span className="text-zinc-100 font-medium">
                     {faq.question}
                   </span>
-                  <span className="text-zinc-400 ml-4">
+                  <motion.span
+                    className="text-zinc-400 ml-4"
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
                     {isOpen ? (
                       <Minus className="w-4 h-4" />
                     ) : (
                       <Plus className="w-4 h-4" />
                     )}
-                  </span>
-                </button>
-                
-                {isOpen && (
-                  <div className="px-5 py-4 bg-zinc-900/30 border-t border-zinc-800">
-                    <p className="text-zinc-400 text-sm leading-relaxed">
-                      {faq.answer}
-                    </p>
-                  </div>
-                )}
-              </div>
+                  </motion.span>
+                </motion.button>
+
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-5 py-4 bg-zinc-900/30 border-t border-zinc-800">
+                        <motion.p
+                          initial={{ y: -10, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          exit={{ y: -10, opacity: 0 }}
+                          transition={{ duration: 0.2, delay: 0.1 }}
+                          className="text-zinc-400 text-sm leading-relaxed"
+                        >
+                          {faq.answer}
+                        </motion.p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
