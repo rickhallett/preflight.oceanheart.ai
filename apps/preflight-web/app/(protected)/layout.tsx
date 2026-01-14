@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { AuthProvider } from "@/components/auth/AuthProvider";
+import { ToastProvider } from "@/components/ui/toast";
 
 export const metadata: Metadata = {
   title: "Preflight AI - Dashboard",
@@ -14,7 +15,9 @@ export default function ProtectedLayout({
 }) {
   return (
     <AuthProvider>
-      <AppLayout>{children}</AppLayout>
+      <ToastProvider>
+        <AppLayout>{children}</AppLayout>
+      </ToastProvider>
     </AuthProvider>
   );
 }

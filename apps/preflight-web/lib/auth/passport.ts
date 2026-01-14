@@ -203,16 +203,57 @@ export function getTokenFromCookie(): string | null {
 
 /**
  * Set token in cookie (client-side)
+ *
+ * SECURITY NOTE: In production, auth cookies should be set by the OAuth server
+ * with HttpOnly flag. This client-side setter is for development/stub mode only.
+ * Real Passport OAuth sets the cookie server-side with proper security flags.
  */
 export function setTokenInCookie(token: string): void {
   if (typeof document === 'undefined') return;
-  
-  const isDev = window.location.hostname === 'localhost' || window.location.hostname.includes('lvh.me');
-  const domain = isDev ? '.lvh.me' : '.oceanheart.ai';
-  
+
+  const hostname = window.location.hostname;
+  const isDev = hostname === 'localhost' || hostname.includes('lvh.me');
+  const isSecure = window.location.protocol === 'https:';
+
+  // Determine cookie domain
+  // localhost doesn't support domain attribute
+  const domain = hostname === 'localhost' ? '' : isDev ? '.lvh.me' : '.oceanheart.ai';
+  const domainAttr = domain ? `domain=${domain};` : '';
+
   // Set cookie for 7 days (matching Passport)
   const expires = new Date();
   expires.setDate(expires.getDate() + 7);
-  
-  document.cookie = `oh_session=${token}; path=/; expires=${expires.toUTCString()}; domain=${domain}; SameSite=Lax`;
+
+  // Build cookie string with security attributes
+  // - SameSite=Strict prevents CSRF attacks
+  // - Secure flag ensures HTTPS-only in production
+  // - HttpOnly cannot be set via JS (must be set server-side)
+  const securePart = isSecure ? 'Secure;' : '';
+
+  document.cookie = `oh_session=${token}; path=/; expires=${expires.toUTCString()}; ${domainAttr} SameSite=Strict; ${securePart}`.replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Clear auth cookie
+ */
+export function clearTokenCookie(): void {
+  if (typeof document === 'undefined') return;
+
+  const hostname = window.location.hostname;
+  const isDev = hostname === 'localhost' || hostname.includes('lvh.me');
+
+  // Clear with same domain settings as set
+  const domain = hostname === 'localhost' ? '' : isDev ? '.lvh.me' : '.oceanheart.ai';
+  const domainAttr = domain ? `domain=${domain};` : '';
+
+  // Set expired cookie to clear it
+  document.cookie = `oh_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; ${domainAttr} SameSite=Strict;`;
+}
+
+/**
+ * Check if we're in a secure context
+ */
+export function isSecureContext(): boolean {
+  if (typeof window === 'undefined') return false;
+  return window.location.protocol === 'https:' || window.location.hostname === 'localhost';
 }

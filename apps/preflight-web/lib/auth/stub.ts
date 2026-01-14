@@ -77,12 +77,20 @@ export function createStubToken(): string {
 
 /**
  * Set stub auth cookie for middleware
+ * Uses secure cookie settings (SameSite=Strict, Secure in production)
  */
 export function setStubCookie(): void {
   if (typeof document === "undefined") return;
-  
+
   const token = createStubToken();
-  document.cookie = `oh_session=${token}; path=/; max-age=3600`;
+  const isSecure = window.location.protocol === 'https:';
+
+  // Build cookie with security attributes
+  // - SameSite=Strict prevents CSRF
+  // - Secure flag for HTTPS contexts
+  const securePart = isSecure ? 'Secure;' : '';
+
+  document.cookie = `oh_session=${token}; path=/; max-age=3600; SameSite=Strict; ${securePart}`.trim();
 }
 
 /**
@@ -90,6 +98,6 @@ export function setStubCookie(): void {
  */
 export function clearStubCookie(): void {
   if (typeof document === "undefined") return;
-  
-  document.cookie = "oh_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+
+  document.cookie = "oh_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=Strict;";
 }

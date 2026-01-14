@@ -66,10 +66,11 @@ export default function SettingsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div className="bg-zinc-900/50 rounded-md p-3 border border-zinc-800 hover:bg-zinc-800/50 transition-all duration-200">
-                <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                <label htmlFor="settings-firstname" className="block text-xs font-medium text-zinc-400 mb-1.5">
                   First Name
                 </label>
                 <input
+                  id="settings-firstname"
                   type="text"
                   defaultValue="John"
                   className="w-full px-2.5 py-1.5 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 focus:outline-none focus:border-zinc-600 transition-all duration-150 hover:border-zinc-600"
@@ -77,10 +78,11 @@ export default function SettingsPage() {
               </div>
 
               <div className="bg-zinc-900/50 rounded-md p-3 border border-zinc-800 hover:bg-zinc-800/50 transition-all duration-200">
-                <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                <label htmlFor="settings-lastname" className="block text-xs font-medium text-zinc-400 mb-1.5">
                   Last Name
                 </label>
                 <input
+                  id="settings-lastname"
                   type="text"
                   defaultValue="Doe"
                   className="w-full px-2.5 py-1.5 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 focus:outline-none focus:border-zinc-600 transition-all duration-150 hover:border-zinc-600"
@@ -88,10 +90,11 @@ export default function SettingsPage() {
               </div>
 
               <div className="bg-zinc-900/50 rounded-md p-3 border border-zinc-800 hover:bg-zinc-800/50 transition-all duration-200">
-                <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                <label htmlFor="settings-email" className="block text-xs font-medium text-zinc-400 mb-1.5">
                   Email Address
                 </label>
                 <input
+                  id="settings-email"
                   type="email"
                   defaultValue="john.doe@example.com"
                   className="w-full px-2.5 py-1.5 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 focus:outline-none focus:border-zinc-600 transition-all duration-150 hover:border-zinc-600"
@@ -99,10 +102,11 @@ export default function SettingsPage() {
               </div>
 
               <div className="bg-zinc-900/50 rounded-md p-3 border border-zinc-800 hover:bg-zinc-800/50 transition-all duration-200">
-                <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                <label htmlFor="settings-phone" className="block text-xs font-medium text-zinc-400 mb-1.5">
                   Phone Number
                 </label>
                 <input
+                  id="settings-phone"
                   type="tel"
                   placeholder="+1 (555) 123-4567"
                   className="w-full px-2.5 py-1.5 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150 hover:border-zinc-600"
@@ -239,21 +243,33 @@ export default function SettingsPage() {
             <div className="bg-zinc-900/50 rounded-md p-4 opacity-0 animate-[fadeInUp_400ms_ease-out_400ms_forwards] hover:bg-zinc-800/50 transition-all duration-200 border border-zinc-800">
               <h3 className="text-base font-semibold text-zinc-100 mb-3">Change Password</h3>
               <div className="space-y-3">
-                <input
-                  type="password"
-                  placeholder="Current password"
-                  className="w-full px-2.5 py-1.5 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150 hover:border-zinc-600 opacity-0 animate-[fadeInUp_300ms_ease-out_500ms_forwards]"
-                />
-                <input
-                  type="password"
-                  placeholder="New password"
-                  className="w-full px-2.5 py-1.5 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150 hover:border-zinc-600 opacity-0 animate-[fadeInUp_300ms_ease-out_600ms_forwards]"
-                />
-                <input
-                  type="password"
-                  placeholder="Confirm new password"
-                  className="w-full px-2.5 py-1.5 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150 hover:border-zinc-600 opacity-0 animate-[fadeInUp_300ms_ease-out_700ms_forwards]"
-                />
+                <div>
+                  <label htmlFor="current-password" className="sr-only">Current password</label>
+                  <input
+                    id="current-password"
+                    type="password"
+                    placeholder="Current password"
+                    className="w-full px-2.5 py-1.5 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150 hover:border-zinc-600 opacity-0 animate-[fadeInUp_300ms_ease-out_500ms_forwards]"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="new-password" className="sr-only">New password</label>
+                  <input
+                    id="new-password"
+                    type="password"
+                    placeholder="New password"
+                    className="w-full px-2.5 py-1.5 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150 hover:border-zinc-600 opacity-0 animate-[fadeInUp_300ms_ease-out_600ms_forwards]"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="confirm-password" className="sr-only">Confirm new password</label>
+                  <input
+                    id="confirm-password"
+                    type="password"
+                    placeholder="Confirm new password"
+                    className="w-full px-2.5 py-1.5 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150 hover:border-zinc-600 opacity-0 animate-[fadeInUp_300ms_ease-out_700ms_forwards]"
+                  />
+                </div>
                 <button className="bg-zinc-700 hover:bg-zinc-600 text-zinc-100 px-3 py-1.5 rounded-md text-sm transition-colors duration-150 opacity-0 animate-[fadeInUp_300ms_ease-out_800ms_forwards]">
                   Update Password
                 </button>
@@ -418,16 +434,24 @@ export default function SettingsPage() {
             <div className="bg-zinc-900/50 rounded-md p-4 opacity-0 animate-[fadeInUp_400ms_ease-out_400ms_forwards] hover:bg-zinc-800/50 transition-all duration-200 border border-zinc-800">
               <h3 className="text-base font-semibold text-zinc-100 mb-3">Contact Support</h3>
               <div className="space-y-3">
-                <input
-                  type="text"
-                  placeholder="Subject"
-                  className="w-full px-2.5 py-1.5 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150 hover:border-zinc-600 opacity-0 animate-[fadeInUp_300ms_ease-out_500ms_forwards]"
-                />
-                <textarea
-                  placeholder="Describe your issue..."
-                  rows={4}
-                  className="w-full px-2.5 py-1.5 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150 hover:border-zinc-600 opacity-0 animate-[fadeInUp_300ms_ease-out_600ms_forwards]"
-                />
+                <div>
+                  <label htmlFor="support-subject" className="sr-only">Subject</label>
+                  <input
+                    id="support-subject"
+                    type="text"
+                    placeholder="Subject"
+                    className="w-full px-2.5 py-1.5 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150 hover:border-zinc-600 opacity-0 animate-[fadeInUp_300ms_ease-out_500ms_forwards]"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="support-message" className="sr-only">Describe your issue</label>
+                  <textarea
+                    id="support-message"
+                    placeholder="Describe your issue..."
+                    rows={4}
+                    className="w-full px-2.5 py-1.5 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-all duration-150 hover:border-zinc-600 opacity-0 animate-[fadeInUp_300ms_ease-out_600ms_forwards]"
+                  />
+                </div>
                 <button className="bg-zinc-700 hover:bg-zinc-600 text-zinc-100 px-3 py-1.5 rounded-md text-sm transition-colors duration-150 opacity-0 animate-[fadeInUp_300ms_ease-out_700ms_forwards]">
                   Send Message
                 </button>

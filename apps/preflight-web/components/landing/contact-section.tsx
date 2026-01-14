@@ -207,16 +207,12 @@ export function ContactSection() {
             </h3>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-              >
-                <label className="block text-sm font-medium text-zinc-400 mb-1.5">
+              <div>
+                <label htmlFor="contact-name" className="block text-sm font-medium text-zinc-400 mb-1.5">
                   Full Name
                 </label>
                 <input
+                  id="contact-name"
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -224,18 +220,14 @@ export function ContactSection() {
                   placeholder="John Doe"
                   required
                 />
-              </motion.div>
+              </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.15 }}
-              >
-                <label className="block text-sm font-medium text-zinc-400 mb-1.5">
+              <div>
+                <label htmlFor="contact-email" className="block text-sm font-medium text-zinc-400 mb-1.5">
                   Email Address
                 </label>
                 <input
+                  id="contact-email"
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -243,36 +235,28 @@ export function ContactSection() {
                   placeholder="john@company.com"
                   required
                 />
-              </motion.div>
+              </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-              >
-                <label className="block text-sm font-medium text-zinc-400 mb-1.5">
+              <div>
+                <label htmlFor="contact-company" className="block text-sm font-medium text-zinc-400 mb-1.5">
                   Company
                 </label>
                 <input
+                  id="contact-company"
                   type="text"
                   value={formData.company}
                   onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                   className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-all duration-200"
                   placeholder="Acme Inc."
                 />
-              </motion.div>
+              </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.25 }}
-              >
-                <label className="block text-sm font-medium text-zinc-400 mb-1.5">
+              <div>
+                <label htmlFor="contact-message" className="block text-sm font-medium text-zinc-400 mb-1.5">
                   Message
                 </label>
                 <textarea
+                  id="contact-message"
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   rows={5}
@@ -280,7 +264,7 @@ export function ContactSection() {
                   placeholder="Tell us about your AI readiness goals..."
                   required
                 />
-              </motion.div>
+              </div>
 
               <motion.button
                 type="submit"

@@ -6,6 +6,7 @@ from .auth import (
     get_current_user_optional,
     require_admin,
     get_auth_mode,
+    validate_auth_config,
 )
 from .rate_limit import (
     RateLimiter,
@@ -17,6 +18,18 @@ from .rate_limit import (
     rate_limit_by_run_id,
     rate_limit_by_user_and_path,
 )
+from .errors import (
+    register_exception_handlers,
+    APIError,
+    NotFoundError,
+    ConflictError,
+    ValidationError,
+    RateLimitError,
+)
+from .logging import (
+    setup_request_logging,
+    get_request_id,
+)
 
 __all__ = [
     # Auth
@@ -25,6 +38,7 @@ __all__ = [
     "get_current_user_optional",
     "require_admin",
     "get_auth_mode",
+    "validate_auth_config",
     # Rate limiting
     "RateLimiter",
     "get_rate_limiter",
@@ -34,4 +48,14 @@ __all__ = [
     "strict_rate_limit",
     "rate_limit_by_run_id",
     "rate_limit_by_user_and_path",
+    # Errors
+    "register_exception_handlers",
+    "APIError",
+    "NotFoundError",
+    "ConflictError",
+    "ValidationError",
+    "RateLimitError",
+    # Logging
+    "setup_request_logging",
+    "get_request_id",
 ]

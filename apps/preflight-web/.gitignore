@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Ralph loop state files
+tests/ralph-prompts/.ralph-*.json
+!tests/ralph-prompts/.ralph-state.example.json

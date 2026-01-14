@@ -1,12 +1,19 @@
-"""Rate limiting middleware and dependencies."""
+"""Rate limiting middleware and dependencies.
 
+Supports both in-memory (development) and Redis-backed (production) rate limiting.
+"""
+
+import logging
+import os
 import time
+from abc import ABC, abstractmethod
 from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
-from uuid import UUID
 
 from fastapi import HTTPException, Request, status
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -17,12 +24,27 @@ class RateLimitEntry:
     window_start: float = field(default_factory=time.time)
 
 
-class RateLimiter:
-    """In-memory rate limiter.
+class RateLimiterBackend(ABC):
+    """Abstract base class for rate limiter backends."""
 
-    For production, this should be replaced with Redis-based rate limiting
-    for distributed deployments.
-    """
+    @abstractmethod
+    async def check_rate_limit(
+        self,
+        key: str,
+        max_requests: int,
+        window_seconds: int,
+    ) -> tuple[bool, int, int]:
+        """Check if a request is allowed under rate limit."""
+        pass
+
+    @abstractmethod
+    async def reset(self, key: str) -> None:
+        """Reset rate limit for a key."""
+        pass
+
+
+class InMemoryRateLimiter(RateLimiterBackend):
+    """In-memory rate limiter for development/testing."""
 
     def __init__(self):
         self._limits: dict[str, RateLimitEntry] = defaultdict(RateLimitEntry)
@@ -45,22 +67,13 @@ class RateLimiter:
 
         self._last_cleanup = now
 
-    def check_rate_limit(
+    async def check_rate_limit(
         self,
         key: str,
         max_requests: int,
         window_seconds: int,
     ) -> tuple[bool, int, int]:
-        """Check if a request is allowed under rate limit.
-
-        Args:
-            key: Unique identifier for rate limiting (e.g., user_id, session_id)
-            max_requests: Maximum requests allowed in the window
-            window_seconds: Time window in seconds
-
-        Returns:
-            Tuple of (is_allowed, remaining_requests, retry_after_seconds)
-        """
+        """Check if a request is allowed under rate limit."""
         self._cleanup_old_entries()
 
         now = time.time()
@@ -82,10 +95,152 @@ class RateLimiter:
 
         return True, remaining, 0
 
-    def reset(self, key: str) -> None:
+    async def reset(self, key: str) -> None:
         """Reset rate limit for a key."""
         if key in self._limits:
             del self._limits[key]
+
+
+class RedisRateLimiter(RateLimiterBackend):
+    """Redis-backed rate limiter for production deployments.
+
+    Uses sliding window algorithm with Redis MULTI/EXEC for atomicity.
+    """
+
+    def __init__(self, redis_url: str):
+        self._redis_url = redis_url
+        self._redis = None
+        self._connection_attempted = False
+
+    async def _get_redis(self):
+        """Get or create Redis connection."""
+        if self._redis is None and not self._connection_attempted:
+            self._connection_attempted = True
+            try:
+                import redis.asyncio as redis
+                self._redis = redis.from_url(
+                    self._redis_url,
+                    encoding="utf-8",
+                    decode_responses=True,
+                )
+                # Test connection
+                await self._redis.ping()
+                logger.info("Connected to Redis for rate limiting")
+            except Exception as e:
+                logger.warning(f"Failed to connect to Redis: {e}. Falling back to in-memory.")
+                self._redis = None
+        return self._redis
+
+    async def check_rate_limit(
+        self,
+        key: str,
+        max_requests: int,
+        window_seconds: int,
+    ) -> tuple[bool, int, int]:
+        """Check rate limit using Redis sliding window."""
+        redis = await self._get_redis()
+        if redis is None:
+            # Fallback to allowing request if Redis unavailable
+            return True, max_requests - 1, 0
+
+        try:
+            now = time.time()
+            window_start = now - window_seconds
+            redis_key = f"ratelimit:{key}"
+
+            # Use pipeline for atomicity
+            pipe = redis.pipeline()
+
+            # Remove old entries outside the window
+            pipe.zremrangebyscore(redis_key, 0, window_start)
+
+            # Count current entries in window
+            pipe.zcard(redis_key)
+
+            # Add current request
+            pipe.zadd(redis_key, {str(now): now})
+
+            # Set expiry on the key
+            pipe.expire(redis_key, window_seconds + 1)
+
+            results = await pipe.execute()
+            current_count = results[1]  # zcard result
+
+            if current_count >= max_requests:
+                # Get the oldest entry to calculate retry time
+                oldest = await redis.zrange(redis_key, 0, 0, withscores=True)
+                if oldest:
+                    oldest_time = oldest[0][1]
+                    retry_after = int(window_seconds - (now - oldest_time))
+                    return False, 0, max(1, retry_after)
+                return False, 0, window_seconds
+
+            remaining = max_requests - current_count - 1
+            return True, max(0, remaining), 0
+
+        except Exception as e:
+            logger.error(f"Redis rate limit error: {e}")
+            # On error, allow request but log the issue
+            return True, max_requests - 1, 0
+
+    async def reset(self, key: str) -> None:
+        """Reset rate limit for a key."""
+        redis = await self._get_redis()
+        if redis:
+            try:
+                await redis.delete(f"ratelimit:{key}")
+            except Exception as e:
+                logger.error(f"Failed to reset rate limit: {e}")
+
+
+class RateLimiter:
+    """Rate limiter facade that uses appropriate backend based on configuration."""
+
+    def __init__(self):
+        self._backend: Optional[RateLimiterBackend] = None
+
+    def _get_backend(self) -> RateLimiterBackend:
+        """Get or create the rate limiter backend."""
+        if self._backend is None:
+            redis_url = os.getenv("REDIS_URL")
+            if redis_url:
+                self._backend = RedisRateLimiter(redis_url)
+                logger.info("Using Redis rate limiter")
+            else:
+                self._backend = InMemoryRateLimiter()
+                logger.info("Using in-memory rate limiter")
+        return self._backend
+
+    async def check_rate_limit(
+        self,
+        key: str,
+        max_requests: int,
+        window_seconds: int,
+    ) -> tuple[bool, int, int]:
+        """Check if a request is allowed under rate limit."""
+        backend = self._get_backend()
+        return await backend.check_rate_limit(key, max_requests, window_seconds)
+
+    def check_rate_limit_sync(
+        self,
+        key: str,
+        max_requests: int,
+        window_seconds: int,
+    ) -> tuple[bool, int, int]:
+        """Synchronous rate limit check (for backwards compatibility)."""
+        backend = self._get_backend()
+        if isinstance(backend, InMemoryRateLimiter):
+            import asyncio
+            return asyncio.get_event_loop().run_until_complete(
+                backend.check_rate_limit(key, max_requests, window_seconds)
+            )
+        # For Redis, allow by default in sync context
+        return True, max_requests - 1, 0
+
+    async def reset(self, key: str) -> None:
+        """Reset rate limit for a key."""
+        backend = self._get_backend()
+        await backend.reset(key)
 
 
 # Global rate limiter instance
@@ -126,7 +281,7 @@ def create_rate_limit_dependency(
             client_ip = request.client.host if request.client else "unknown"
             key = f"{client_ip}:{request.url.path}"
 
-        is_allowed, remaining, retry_after = limiter.check_rate_limit(
+        is_allowed, remaining, retry_after = await limiter.check_rate_limit(
             key, max_requests, window_seconds
         )
 

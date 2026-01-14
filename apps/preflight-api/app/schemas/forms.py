@@ -3,7 +3,9 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+from ..utils.validation import validate_form_answers, sanitize_string
 
 
 class RFC7807Error(BaseModel):
@@ -105,8 +107,20 @@ class RunSummaryResponse(BaseModel):
 class AnswersSave(BaseModel):
     """Request schema for saving answers."""
 
-    page_id: str = Field(description="ID of the page these answers belong to")
+    page_id: str = Field(description="ID of the page these answers belong to", max_length=100)
     answers: dict[str, Any] = Field(description="Field name to value mapping")
+
+    @field_validator("page_id")
+    @classmethod
+    def sanitize_page_id(cls, v: str) -> str:
+        """Sanitize page_id to prevent injection."""
+        return sanitize_string(v, max_length=100)
+
+    @field_validator("answers")
+    @classmethod
+    def validate_answers(cls, v: dict[str, Any]) -> dict[str, Any]:
+        """Validate and sanitize all answer values."""
+        return validate_form_answers(v)
 
 
 class AnswersSaveResponse(BaseModel):

@@ -26,7 +26,21 @@ function validateStubToken(token: string): boolean {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  
+
+  // HTTPS enforcement in production
+  // Redirect HTTP to HTTPS when behind a reverse proxy
+  if (process.env.NODE_ENV === "production") {
+    const forwardedProto = request.headers.get("x-forwarded-proto");
+    const host = request.headers.get("host");
+
+    // Only redirect if we're receiving HTTP (not HTTPS)
+    if (forwardedProto === "http" && host) {
+      const httpsUrl = new URL(`https://${host}${pathname}`);
+      httpsUrl.search = request.nextUrl.search;
+      return NextResponse.redirect(httpsUrl, { status: 301 });
+    }
+  }
+
   // Check if the route is protected
   const isProtectedRoute = protectedRoutes.some(route => 
     pathname === route || pathname.startsWith(`${route}/`)

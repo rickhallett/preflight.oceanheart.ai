@@ -1,0 +1,21 @@
+{
+  "iteration": 0,
+  "timestamp": "2025-01-13T00:00:00.000Z",
+  "testsRun": 0,
+  "testsPassed": 0,
+  "testsFailed": 0,
+  "scenarios": {
+    "landing": { "status": "pending", "issues": [] },
+    "auth": { "status": "pending", "issues": [] },
+    "dashboard": { "status": "pending", "issues": [] },
+    "survey": { "status": "pending", "issues": [] },
+    "settings": { "status": "pending", "issues": [] },
+    "errors": { "status": "pending", "issues": [] },
+    "performance": { "status": "pending", "issues": [] },
+    "accessibility": { "status": "pending", "issues": [] }
+  },
+  "issuesFixed": [],
+  "remainingIssues": [],
+  "status": "not_started",
+  "notes": "Copy this to .ralph-state.json to initialize state"
+}

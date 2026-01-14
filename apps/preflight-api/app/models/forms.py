@@ -3,7 +3,7 @@ import uuid
 from datetime import datetime
 from typing import Any
 
-from sqlalchemy import Boolean, ForeignKey, JSON, String, func
+from sqlalchemy import Boolean, ForeignKey, Index, JSON, String, func
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import CHAR, TypeDecorator
@@ -63,6 +63,10 @@ class JSONType(TypeDecorator):
 
 class FormDefinition(Base):
     __tablename__ = "form_definitions"
+    __table_args__ = (
+        Index("ix_form_definitions_name_active", "name", "is_active"),
+        Index("ix_form_definitions_created_at", "created_at"),
+    )
 
     id: Mapped[uuid.UUID] = mapped_column(GUID(), primary_key=True, default=uuid.uuid4)
     name: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
@@ -81,6 +85,13 @@ class FormDefinition(Base):
 
 class Run(Base):
     __tablename__ = "runs"
+    __table_args__ = (
+        Index("ix_runs_form_definition_id", "form_definition_id"),
+        Index("ix_runs_status", "status"),
+        Index("ix_runs_session_token", "session_token"),
+        Index("ix_runs_started_at", "started_at"),
+        Index("ix_runs_form_status", "form_definition_id", "status"),
+    )
 
     id: Mapped[uuid.UUID] = mapped_column(GUID(), primary_key=True, default=uuid.uuid4)
     form_definition_id: Mapped[uuid.UUID] = mapped_column(
@@ -114,6 +125,11 @@ if TYPE_CHECKING:
 
 class Answer(Base):
     __tablename__ = "answers"
+    __table_args__ = (
+        Index("ix_answers_run_id", "run_id"),
+        Index("ix_answers_run_page", "run_id", "page_id"),
+        Index("ix_answers_run_field", "run_id", "field_name"),
+    )
 
     id: Mapped[uuid.UUID] = mapped_column(GUID(), primary_key=True, default=uuid.uuid4)
     run_id: Mapped[uuid.UUID] = mapped_column(
