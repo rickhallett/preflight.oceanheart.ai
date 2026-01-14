@@ -145,6 +145,16 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Fix browser autofill background color */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #27272a inset !important;
+    -webkit-text-fill-color: #fafafa !important;
+    caret-color: #fafafa !important;
+  }
 }
 
 /* Custom animations for subtle transitions */

@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { 
-  Bell, 
-  Shield, 
-  Palette, 
-  Globe, 
-  User, 
-  Lock, 
+import {
+  Bell,
+  Shield,
+  Palette,
+  Globe,
+  User,
+  Lock,
   Smartphone,
   CreditCard,
   HelpCircle,
@@ -15,10 +15,12 @@ import {
   Check,
   X
 } from "lucide-react";
+import { useAuth } from "@/components/auth/AuthProvider";
 
 type NotificationKey = 'email' | 'push' | 'weekly' | 'product' | 'security';
 
 export default function SettingsPage() {
+  const { user, isLoading } = useAuth();
   const [activeSection, setActiveSection] = useState("account");
   const [notifications, setNotifications] = useState<Record<NotificationKey, boolean>>({
     email: true,
@@ -27,6 +29,13 @@ export default function SettingsPage() {
     product: false,
     security: true
   });
+
+  // Get user display info from Clerk
+  const userName = user?.firstName || user?.email?.split("@")[0] || "User";
+  const userEmail = user?.email || "Not available";
+  const userFirstName = user?.firstName || "";
+  const userLastName = user?.lastName || "";
+  const userInitials = userName.slice(0, 2).toUpperCase();
 
   const menuItems = [
     { id: "account", label: "Account", icon: User },
@@ -44,60 +53,69 @@ export default function SettingsPage() {
           <div className="space-y-4">
             <div>
               <h2 className="text-xl font-bold text-zinc-100 mb-1">Account Settings</h2>
-              <p className="text-sm text-zinc-400">Manage your account information and preferences</p>
+              <p className="text-sm text-zinc-400">View your account information (managed via Clerk)</p>
             </div>
 
             <div className="bg-zinc-900/50 rounded-md p-4 space-y-3 border border-zinc-800 hover:bg-zinc-800/50 transition-all duration-200">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-zinc-800 rounded-full flex items-center justify-center text-zinc-100 text-lg font-bold border border-zinc-700">
-                    JD
-                  </div>
+                  {user?.imageUrl ? (
+                    <img
+                      src={user.imageUrl}
+                      alt={userName}
+                      className="w-12 h-12 rounded-full border border-zinc-700"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 bg-zinc-800 rounded-full flex items-center justify-center text-zinc-100 text-lg font-bold border border-zinc-700">
+                      {userInitials}
+                    </div>
+                  )}
                   <div>
-                    <h3 className="text-base font-semibold text-zinc-100">John Doe</h3>
-                    <p className="text-zinc-400 text-sm">john.doe@example.com</p>
+                    <h3 className="text-base font-semibold text-zinc-100">{userName}</h3>
+                    <p className="text-zinc-400 text-sm">{userEmail}</p>
                   </div>
                 </div>
-                <button className="text-zinc-400 hover:text-zinc-300 text-sm transition-colors duration-150">
-                  Change Photo
-                </button>
+                <span className="text-zinc-500 text-xs">Managed by Clerk</span>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div className="bg-zinc-900/50 rounded-md p-3 border border-zinc-800 hover:bg-zinc-800/50 transition-all duration-200">
+              <div className="bg-zinc-900/50 rounded-md p-3 border border-zinc-800">
                 <label htmlFor="settings-firstname" className="block text-xs font-medium text-zinc-400 mb-1.5">
                   First Name
                 </label>
                 <input
                   id="settings-firstname"
                   type="text"
-                  defaultValue="John"
-                  className="w-full px-2.5 py-1.5 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 focus:outline-none focus:border-zinc-600 transition-all duration-150 hover:border-zinc-600"
+                  value={userFirstName}
+                  disabled
+                  className="w-full px-2.5 py-1.5 bg-zinc-800/50 border border-zinc-700 rounded-md text-sm text-zinc-400 cursor-not-allowed"
                 />
               </div>
 
-              <div className="bg-zinc-900/50 rounded-md p-3 border border-zinc-800 hover:bg-zinc-800/50 transition-all duration-200">
+              <div className="bg-zinc-900/50 rounded-md p-3 border border-zinc-800">
                 <label htmlFor="settings-lastname" className="block text-xs font-medium text-zinc-400 mb-1.5">
                   Last Name
                 </label>
                 <input
                   id="settings-lastname"
                   type="text"
-                  defaultValue="Doe"
-                  className="w-full px-2.5 py-1.5 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 focus:outline-none focus:border-zinc-600 transition-all duration-150 hover:border-zinc-600"
+                  value={userLastName}
+                  disabled
+                  className="w-full px-2.5 py-1.5 bg-zinc-800/50 border border-zinc-700 rounded-md text-sm text-zinc-400 cursor-not-allowed"
                 />
               </div>
 
-              <div className="bg-zinc-900/50 rounded-md p-3 border border-zinc-800 hover:bg-zinc-800/50 transition-all duration-200">
+              <div className="bg-zinc-900/50 rounded-md p-3 border border-zinc-800">
                 <label htmlFor="settings-email" className="block text-xs font-medium text-zinc-400 mb-1.5">
                   Email Address
                 </label>
                 <input
                   id="settings-email"
                   type="email"
-                  defaultValue="john.doe@example.com"
-                  className="w-full px-2.5 py-1.5 bg-zinc-800 border border-zinc-700 rounded-md text-sm text-zinc-100 focus:outline-none focus:border-zinc-600 transition-all duration-150 hover:border-zinc-600"
+                  value={userEmail}
+                  disabled
+                  className="w-full px-2.5 py-1.5 bg-zinc-800/50 border border-zinc-700 rounded-md text-sm text-zinc-400 cursor-not-allowed"
                 />
               </div>
 

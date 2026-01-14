@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useSurveyStore } from "@/lib/stores/survey-store";
 import { ProgressBar } from "./ProgressBar";
 import { PersonalInfoForm } from "./forms/PersonalInfoForm";
@@ -8,7 +8,7 @@ import { PreferencesForm } from "./forms/PreferencesForm";
 import { TechnicalForm } from "./forms/TechnicalForm";
 import { FeedbackForm } from "./forms/FeedbackForm";
 import { FinalForm } from "./forms/FinalForm";
-import { ChevronLeft, ChevronRight, Send, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Send, X, CheckCircle } from "lucide-react";
 
 export function SurveyContainer() {
   const { 
@@ -68,16 +68,16 @@ export function SurveyContainer() {
     }
   };
 
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
   const handleSubmit = () => {
     if (canSubmit) {
-      // Here you would typically send the data to your API
-      console.log("Survey submitted!", useSurveyStore.getState().formData);
-      
-      // Show success message and return to dashboard
-      alert("Survey submitted successfully! Thank you for your feedback.");
-      endSurvey();
-    } else {
-      alert("Please complete all required fields before submitting.");
+      // TODO: Send data to API when backend is ready
+      // For now, just show success and end survey
+      setSubmitStatus('success');
+      setTimeout(() => {
+        endSurvey();
+      }, 2000);
     }
   };
 
@@ -86,6 +86,19 @@ export function SurveyContainer() {
       endSurvey();
     }
   };
+
+  // Show success message after submission
+  if (submitStatus === 'success') {
+    return (
+      <div className="max-w-md mx-auto text-center py-12">
+        <div className="bg-zinc-900/50 backdrop-blur-sm rounded-md border border-zinc-800 p-8">
+          <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
+          <h2 className="text-xl font-bold text-zinc-100 mb-2">Survey Submitted</h2>
+          <p className="text-sm text-zinc-400">Thank you for your feedback. Redirecting to dashboard...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto">

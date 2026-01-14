@@ -1,14 +1,12 @@
 "use client";
 
 import React from "react";
-import { LogOut, User, Mail, Shield, Edit2, ExternalLink } from "lucide-react";
+import { LogOut, User, Mail, Shield, ExternalLink } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
-import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 
 export default function ProfilePage() {
   const { user, signOut, isLoading } = useAuth();
-  const { user: clerkUser } = useUser();
 
   const handleSignOut = async () => {
     await signOut();
@@ -67,13 +65,8 @@ export default function ProfilePage() {
             <p className="text-sm text-zinc-400">{userEmail}</p>
           </div>
 
-          {/* Edit Button - Opens Clerk user profile */}
-          <button
-            onClick={() => clerkUser?.update && window.open('/user-profile', '_blank')}
-            className="p-2 text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800 rounded-md transition-colors"
-          >
-            <Edit2 className="w-4 h-4" />
-          </button>
+          {/* Profile managed via Clerk */}
+          <span className="text-xs text-zinc-500">Managed by Clerk</span>
         </div>
       </div>
 
