@@ -1,31 +1,39 @@
 "use client";
 
 import React from "react";
-import { LogOut, User, Mail, Calendar, Shield, Edit2 } from "lucide-react";
-import { signOut, clearStubCookie } from "@/lib/auth/stub";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/lib/auth/AuthProvider";
+import { LogOut, User, Mail, Shield, Edit2, ExternalLink } from "lucide-react";
+import { useAuth } from "@/components/auth/AuthProvider";
+import { useUser } from "@clerk/nextjs";
+import Image from "next/image";
 
 export default function ProfilePage() {
-  const router = useRouter();
-  const { user, isStubAuth } = useAuth();
+  const { user, signOut, isLoading } = useAuth();
+  const { user: clerkUser } = useUser();
 
-  const handleSignOut = () => {
-    // Clear auth
-    signOut();
-    clearStubCookie();
-
-    // Clear real token cookie too
-    document.cookie = 'oh_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-
-    // Redirect to login
-    router.push("/login");
+  const handleSignOut = async () => {
+    await signOut();
   };
 
   // Get user display info
   const userEmail = user?.email || "Not available";
-  const userName = user?.email?.split("@")[0] || "User";
+  const userName = user?.firstName || user?.email?.split("@")[0] || "User";
+  const fullName = user?.firstName && user?.lastName
+    ? `${user.firstName} ${user.lastName}`
+    : userName;
   const userInitials = userName.slice(0, 2).toUpperCase();
+
+  if (isLoading) {
+    return (
+      <div className="max-w-3xl mx-auto space-y-6 animate-pulse">
+        <div className="h-8 w-32 bg-zinc-800 rounded" />
+        <div className="h-24 bg-zinc-800 rounded-md" />
+        <div className="grid grid-cols-2 gap-3">
+          <div className="h-20 bg-zinc-800 rounded-md" />
+          <div className="h-20 bg-zinc-800 rounded-md" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
@@ -39,18 +47,31 @@ export default function ProfilePage() {
       <div className="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-md p-4">
         <div className="flex items-center space-x-4">
           {/* Avatar */}
-          <div className="w-14 h-14 bg-zinc-800 rounded-full flex items-center justify-center text-zinc-100 font-bold text-lg border border-zinc-700">
-            {userInitials}
-          </div>
+          {user?.imageUrl ? (
+            <Image
+              src={user.imageUrl}
+              alt={fullName}
+              width={56}
+              height={56}
+              className="w-14 h-14 rounded-full border border-zinc-700"
+            />
+          ) : (
+            <div className="w-14 h-14 bg-zinc-800 rounded-full flex items-center justify-center text-zinc-100 font-bold text-lg border border-zinc-700">
+              {userInitials}
+            </div>
+          )}
 
           {/* User Info */}
           <div className="flex-1">
-            <h2 className="text-base font-semibold text-zinc-100">{userName}</h2>
+            <h2 className="text-base font-semibold text-zinc-100">{fullName}</h2>
             <p className="text-sm text-zinc-400">{userEmail}</p>
           </div>
 
-          {/* Edit Button */}
-          <button className="p-2 text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800 rounded-md transition-colors">
+          {/* Edit Button - Opens Clerk user profile */}
+          <button
+            onClick={() => clerkUser?.update && window.open('/user-profile', '_blank')}
+            className="p-2 text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800 rounded-md transition-colors"
+          >
             <Edit2 className="w-4 h-4" />
           </button>
         </div>
@@ -64,9 +85,7 @@ export default function ProfilePage() {
             <User className="w-4 h-4 text-zinc-500 mt-0.5" />
             <div>
               <p className="text-xs text-zinc-400">Account Type</p>
-              <p className="text-sm font-medium text-zinc-100">
-                {isStubAuth ? "Development" : "Standard"}
-              </p>
+              <p className="text-sm font-medium text-zinc-100">Standard</p>
             </div>
           </div>
         </div>
@@ -74,12 +93,10 @@ export default function ProfilePage() {
         {/* Auth Provider */}
         <div className="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-md p-3">
           <div className="flex items-start space-x-3">
-            <Calendar className="w-4 h-4 text-zinc-500 mt-0.5" />
+            <ExternalLink className="w-4 h-4 text-zinc-500 mt-0.5" />
             <div>
               <p className="text-xs text-zinc-400">Auth Provider</p>
-              <p className="text-sm font-medium text-zinc-100">
-                {isStubAuth ? "Local (Dev)" : "Oceanheart Passport"}
-              </p>
+              <p className="text-sm font-medium text-zinc-100">Clerk</p>
             </div>
           </div>
         </div>
@@ -107,24 +124,6 @@ export default function ProfilePage() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="space-y-3">
-        <h3 className="text-sm font-semibold text-zinc-100">Quick Actions</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-          <button className="px-3 py-2 bg-zinc-900/50 border border-zinc-800 text-zinc-100 text-sm font-medium rounded-md hover:bg-zinc-800/50 hover:border-zinc-700 transition-colors">
-            Edit Profile
-          </button>
-
-          <button className="px-3 py-2 bg-zinc-900/50 border border-zinc-800 text-zinc-100 text-sm font-medium rounded-md hover:bg-zinc-800/50 hover:border-zinc-700 transition-colors">
-            Change Password
-          </button>
-
-          <button className="px-3 py-2 bg-zinc-900/50 border border-zinc-800 text-zinc-100 text-sm font-medium rounded-md hover:bg-zinc-800/50 hover:border-zinc-700 transition-colors">
-            Download Data
-          </button>
         </div>
       </div>
 

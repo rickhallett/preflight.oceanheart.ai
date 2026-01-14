@@ -1,19 +1,29 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { isAuthenticated, getCurrentUser, type StubUser } from "@/lib/auth/stub";
+import React, { createContext, useContext } from "react";
+import { useUser, useClerk } from "@clerk/nextjs";
+
+// User type that matches what components expect
+export interface AuthUser {
+  userId: string;
+  email: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  imageUrl?: string;
+}
 
 interface AuthContextType {
+  user: AuthUser | null;
+  isLoading: boolean;
   isAuthenticated: boolean;
-  user: StubUser | null;
-  checkAuth: () => void;
+  signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
-  isAuthenticated: false,
   user: null,
-  checkAuth: () => {},
+  isLoading: true,
+  isAuthenticated: false,
+  signOut: async () => {},
 });
 
 export function useAuth() {
@@ -21,35 +31,33 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [authState, setAuthState] = useState({
-    isAuthenticated: false,
-    user: null as StubUser | null,
-  });
-  const router = useRouter();
-  const pathname = usePathname();
+  const { user: clerkUser, isLoaded, isSignedIn } = useUser();
+  const { signOut: clerkSignOut } = useClerk();
 
-  const checkAuth = () => {
-    const authenticated = isAuthenticated();
-    const user = getCurrentUser();
-    setAuthState({ isAuthenticated: authenticated, user });
-    
-    // Redirect logic
-    const protectedRoutes = ["/app", "/app/profile", "/app/settings"];
-    const isProtectedRoute = protectedRoutes.some(route => 
-      pathname === route || pathname.startsWith(`${route}/`)
-    );
-    
-    if (isProtectedRoute && !authenticated) {
-      router.push("/login");
-    }
+  // Map Clerk user to our app's user type
+  const user: AuthUser | null = clerkUser
+    ? {
+        userId: clerkUser.id,
+        email: clerkUser.primaryEmailAddress?.emailAddress || "",
+        firstName: clerkUser.firstName,
+        lastName: clerkUser.lastName,
+        imageUrl: clerkUser.imageUrl,
+      }
+    : null;
+
+  const signOut = async () => {
+    await clerkSignOut({ redirectUrl: "/login" });
   };
 
-  useEffect(() => {
-    checkAuth();
-  }, [pathname]);
-
   return (
-    <AuthContext.Provider value={{ ...authState, checkAuth }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isLoading: !isLoaded,
+        isAuthenticated: !!isSignedIn,
+        signOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

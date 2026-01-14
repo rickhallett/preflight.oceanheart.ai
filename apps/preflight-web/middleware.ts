@@ -1,39 +1,29 @@
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { isStubToken, verifyToken } from "@/lib/auth/passport";
 
-// List of protected routes that require authentication
-const protectedRoutes = ["/app", "/app/profile", "/app/settings"];
+// Define protected routes that require authentication
+const isProtectedRoute = createRouteMatcher([
+  "/app(.*)",
+  "/survey(.*)",
+]);
 
-// List of public routes that don't require authentication
-const publicRoutes = ["/", "/login"];
+// Define public routes (no auth required)
+const isPublicRoute = createRouteMatcher([
+  "/",
+  "/login",
+  "/sign-in(.*)",
+  "/sign-up(.*)",
+  "/sandbox(.*)",
+]);
 
-// Helper to check if token is a stub token
-function validateStubToken(token: string): boolean {
-  try {
-    const parts = token.split(".");
-    if (parts.length !== 3) return false;
-    
-    // Decode payload to check expiration
-    const payload = JSON.parse(atob(parts[1]));
-    const exp = payload.exp * 1000; // Convert to milliseconds
-    
-    return Date.now() <= exp;
-  } catch {
-    return false;
-  }
-}
-
-export async function middleware(request: NextRequest) {
+export default clerkMiddleware(async (auth, request) => {
   const { pathname } = request.nextUrl;
 
   // HTTPS enforcement in production
-  // Redirect HTTP to HTTPS when behind a reverse proxy
   if (process.env.NODE_ENV === "production") {
     const forwardedProto = request.headers.get("x-forwarded-proto");
     const host = request.headers.get("host");
 
-    // Only redirect if we're receiving HTTP (not HTTPS)
     if (forwardedProto === "http" && host) {
       const httpsUrl = new URL(`https://${host}${pathname}`);
       httpsUrl.search = request.nextUrl.search;
@@ -41,85 +31,26 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Check if the route is protected
-  const isProtectedRoute = protectedRoutes.some(route => 
-    pathname === route || pathname.startsWith(`${route}/`)
-  );
-  
-  if (!isProtectedRoute) {
-    return NextResponse.next();
-  }
-  
-  // Check for authentication token
-  const token = request.cookies.get("oh_session");
-  
-  if (!token) {
-    // Redirect to login with return URL
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("returnTo", pathname);
-    return NextResponse.redirect(loginUrl);
-  }
-  
-  try {
-    const tokenValue = token.value;
-    
-    // Basic structure validation
-    const parts = tokenValue.split(".");
-    if (parts.length !== 3) {
-      throw new Error("Invalid token structure");
+  // Protect routes that require authentication
+  if (isProtectedRoute(request)) {
+    const { userId } = await auth();
+
+    if (!userId) {
+      // Redirect to login with return URL
+      const loginUrl = new URL("/login", request.url);
+      loginUrl.searchParams.set("returnTo", pathname);
+      return NextResponse.redirect(loginUrl);
     }
-    
-    // Check if it's a stub token (for testing)
-    if (isStubToken(tokenValue)) {
-      // Validate stub token locally
-      if (validateStubToken(tokenValue)) {
-        return NextResponse.next();
-      } else {
-        throw new Error("Stub token expired");
-      }
-    }
-    
-    // For real JWT tokens, we'll validate them on the client side
-    // to avoid making API calls in middleware (which can be slow)
-    // Just check basic structure and expiration here
-    try {
-      const payload = JSON.parse(atob(parts[1]));
-      const exp = payload.exp * 1000; // Convert to milliseconds
-      
-      if (Date.now() > exp) {
-        throw new Error("Token expired");
-      }
-      
-      // Token appears structurally valid, actual verification 
-      // will happen client-side with API calls
-      return NextResponse.next();
-    } catch {
-      // If we can't decode the payload, it's likely invalid
-      throw new Error("Invalid token payload");
-    }
-  } catch (error) {
-    // Invalid or expired token, redirect to login
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("returnTo", pathname);
-    
-    // Clear the invalid cookie
-    const response = NextResponse.redirect(loginUrl);
-    response.cookies.delete("oh_session");
-    
-    return response;
   }
-}
+
+  return NextResponse.next();
+});
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico|public).*)",
+    // Skip Next.js internals and static files
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    // Always run for API routes
+    "/(api|trpc)(.*)",
   ],
 };

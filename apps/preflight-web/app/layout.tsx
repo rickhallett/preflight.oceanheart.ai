@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -38,19 +39,31 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-950 text-zinc-100`}
-      >
-        {/* Skip to main content link for accessibility */}
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-zinc-800 focus:text-zinc-100 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-400"
+    <ClerkProvider
+      appearance={{
+        variables: {
+          colorPrimary: "#a1a1aa",
+          colorBackground: "#18181b",
+          colorInputBackground: "#27272a",
+          colorInputText: "#fafafa",
+          colorText: "#fafafa",
+        },
+      }}
+    >
+      <html lang="en" className="dark">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-950 text-zinc-100`}
         >
-          Skip to main content
-        </a>
-        {children}
-      </body>
-    </html>
+          {/* Skip to main content link for accessibility */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-zinc-800 focus:text-zinc-100 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-400"
+          >
+            Skip to main content
+          </a>
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
