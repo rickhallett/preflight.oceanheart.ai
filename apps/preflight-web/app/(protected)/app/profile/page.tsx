@@ -4,18 +4,28 @@ import React from "react";
 import { LogOut, User, Mail, Calendar, Shield, Edit2 } from "lucide-react";
 import { signOut, clearStubCookie } from "@/lib/auth/stub";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth/AuthProvider";
 
 export default function ProfilePage() {
   const router = useRouter();
+  const { user, isStubAuth } = useAuth();
 
   const handleSignOut = () => {
-    // Clear stub auth
+    // Clear auth
     signOut();
     clearStubCookie();
+
+    // Clear real token cookie too
+    document.cookie = 'oh_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
 
     // Redirect to login
     router.push("/login");
   };
+
+  // Get user display info
+  const userEmail = user?.email || "Not available";
+  const userName = user?.email?.split("@")[0] || "User";
+  const userInitials = userName.slice(0, 2).toUpperCase();
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
@@ -30,13 +40,13 @@ export default function ProfilePage() {
         <div className="flex items-center space-x-4">
           {/* Avatar */}
           <div className="w-14 h-14 bg-zinc-800 rounded-full flex items-center justify-center text-zinc-100 font-bold text-lg border border-zinc-700">
-            JD
+            {userInitials}
           </div>
-          
+
           {/* User Info */}
           <div className="flex-1">
-            <h2 className="text-base font-semibold text-zinc-100">John Doe</h2>
-            <p className="text-sm text-zinc-400">john.doe@example.com</p>
+            <h2 className="text-base font-semibold text-zinc-100">{userName}</h2>
+            <p className="text-sm text-zinc-400">{userEmail}</p>
           </div>
 
           {/* Edit Button */}
@@ -54,18 +64,22 @@ export default function ProfilePage() {
             <User className="w-4 h-4 text-zinc-500 mt-0.5" />
             <div>
               <p className="text-xs text-zinc-400">Account Type</p>
-              <p className="text-sm font-medium text-zinc-100">Premium</p>
+              <p className="text-sm font-medium text-zinc-100">
+                {isStubAuth ? "Development" : "Standard"}
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Member Since */}
+        {/* Auth Provider */}
         <div className="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-md p-3">
           <div className="flex items-start space-x-3">
             <Calendar className="w-4 h-4 text-zinc-500 mt-0.5" />
             <div>
-              <p className="text-xs text-zinc-400">Member Since</p>
-              <p className="text-sm font-medium text-zinc-100">January 2024</p>
+              <p className="text-xs text-zinc-400">Auth Provider</p>
+              <p className="text-sm font-medium text-zinc-100">
+                {isStubAuth ? "Local (Dev)" : "Oceanheart Passport"}
+              </p>
             </div>
           </div>
         </div>
@@ -76,7 +90,7 @@ export default function ProfilePage() {
             <Mail className="w-4 h-4 text-zinc-500 mt-0.5" />
             <div>
               <p className="text-xs text-zinc-400">Email Address</p>
-              <p className="text-sm font-medium text-zinc-100">john.doe@example.com</p>
+              <p className="text-sm font-medium text-zinc-100">{userEmail}</p>
             </div>
           </div>
         </div>
@@ -103,18 +117,18 @@ export default function ProfilePage() {
           <button className="px-3 py-2 bg-zinc-900/50 border border-zinc-800 text-zinc-100 text-sm font-medium rounded-md hover:bg-zinc-800/50 hover:border-zinc-700 transition-colors">
             Edit Profile
           </button>
-          
+
           <button className="px-3 py-2 bg-zinc-900/50 border border-zinc-800 text-zinc-100 text-sm font-medium rounded-md hover:bg-zinc-800/50 hover:border-zinc-700 transition-colors">
             Change Password
           </button>
-          
+
           <button className="px-3 py-2 bg-zinc-900/50 border border-zinc-800 text-zinc-100 text-sm font-medium rounded-md hover:bg-zinc-800/50 hover:border-zinc-700 transition-colors">
             Download Data
           </button>
         </div>
       </div>
 
-      {/* Danger Zone - Compact */}
+      {/* Sign Out */}
       <div className="border border-zinc-800 rounded-md p-3">
         <div className="flex items-center justify-between">
           <div>
